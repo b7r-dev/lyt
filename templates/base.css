@@ -1061,7 +1061,7 @@ a:hover {
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark mode: Warm night sky with fireflies */
-    --color-bg: #0d0e12;
+    --color-bg: #111215;
     --color-surface: #16181f;
     --color-surface-elevated: #1e2028;
     --color-border: #2a2e38;
