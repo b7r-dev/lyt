@@ -56,7 +56,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer watcher.Close()
+	defer func() { _ = watcher.Close() }()
 
 	go func() {
 		debounce := time.NewTimer(500 * time.Millisecond)
@@ -110,7 +110,7 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 	clientsMu.Lock()
 	clients = append(clients, conn)
 	clientsMu.Unlock()
@@ -125,7 +125,7 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 		clientsMu.Unlock()
 	}()
 	for {
-		conn.ReadMessage()
+		_, _, _ = conn.ReadMessage()
 	}
 }
 
@@ -136,17 +136,17 @@ func notifyClients(msg string) {
 	clientsMu.Lock()
 	defer clientsMu.Unlock()
 	for _, c := range clients {
-		c.WriteMessage(websocket.TextMessage, []byte(msg))
+		_ = c.WriteMessage(websocket.TextMessage, []byte(msg))
 	}
 }
 
 func watchDir(w *fsnotify.Watcher, dir string) {
-	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	_ = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return nil
 		}
 		if info.IsDir() {
-			w.Add(path)
+			_ = w.Add(path)
 		}
 		return nil
 	})

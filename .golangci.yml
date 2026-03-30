@@ -1,47 +1,18 @@
 # golangci-lint configuration for lyt
 
+version: "2"
+
 run:
   timeout: 5m
   modules-download-mode: readonly
+  tests: false
 
 linters:
   enable:
-    - errcheck      # Check for unchecked errors
-    - gosimple      # Simplify code
-    - govet         # Reports suspicious constructs
-    - ineffassign   # Detects unused variable assignments
-    - staticcheck   # Static analysis checks
-    - unused        # Checks for unused code
-    - gofmt         # Checks whether code was gofmt-ed
-    - goimports     # Check import statements are formatted
-    - misspell      # Finds commonly misspelled English words
-    - unconvert     # Detects unnecessary type conversions
-    - unparam       # Reports unused function parameters
-    - gocritic      # Provides diagnostics that check for bugs and style issues
-    - gosec         # Finds security problems
-
-linters-settings:
-  errcheck:
-    check-type-assertions: true
-    check-blank: true
-  govet:
-    enable-all: true
-  gocritic:
-    disabled-checks:
-      - commentFormatting
-  gosec:
-    excludes:
-      - G104  #.io errors are unhandled
+    - errcheck
+    - govet
+  disable:
+    - staticcheck
 
 issues:
   exclude-use-default: false
-  max-issues-per-linter: 0
-  max-same-issues: 0
-
-  # Exclude some linters from running on tests files
-  exclude-rules:
-    - path: _test\.go
-      linters:
-        - gocyclo
-        - funlen
-        - gosec

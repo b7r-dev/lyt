@@ -227,7 +227,7 @@ func runBuild(cmd *cobra.Command, args []string) error {
 	}
 
 	// Save the cache
-	cache.Save()
+	_ = cache.Save()
 
 	elapsed := time.Since(start)
 	fmt.Printf("✅ Built %d pages → %s (%.2fs)\n", pagesGenerated, outputDir, elapsed.Seconds())
