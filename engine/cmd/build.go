@@ -257,8 +257,8 @@ func pageSlugToPath(relPath, outputDir string) string {
 		return filepath.Join(outputDir, name, "index.html")
 	}
 
-	// Multi-segment path like "docs/getting-started"
-	return filepath.Join(outputDir, name+".html")
+	// Multi-segment path like "docs/getting-started" -> docs/getting-started/index.html
+	return filepath.Join(outputDir, name, "index.html")
 }
 
 func blogSlugToPath(relPath, outputDir string) string {

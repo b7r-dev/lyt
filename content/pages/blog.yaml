@@ -15,6 +15,10 @@ sections:
     type: "default"
     title: "Posts"
     cards:
+      - title: "Agents, read this first"
+        body: "A manifesto on building agent-native interfaces."
+        href: "/blog/agents-read-this-first"
+        variant: "default"
       - title: "On the shape of tools"
         body: "The tools we use shape the work we produce. Not just the output — the thinking itself."
         href: "/blog/shape-of-tools"

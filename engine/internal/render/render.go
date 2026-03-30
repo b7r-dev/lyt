@@ -927,16 +927,6 @@ func (r *Renderer) renderNav(currentSlug string) string {
 
 	// GitHub link (rightmost)
 	sb.WriteString(githubLink)
-	sb.WriteString(`<ul class="nav-links">`)
-	for _, item := range nav {
-		if m, ok := item.(map[string]interface{}); ok {
-			label := getString(m, "label", "")
-			href := getString(m, "href", "#")
-			active := r.isActiveNavLink(href, currentSlug)
-			sb.WriteString(fmt.Sprintf(`<li><a href="%s" class="nav-link"%s>%s</a></li>`, href, active, label))
-		}
-	}
-	sb.WriteString(`</ul>`)
 
 	// Mobile hamburger + menu (checkbox hack for JS-free toggle)
 	sb.WriteString(`<input type="checkbox" id="nav-menu" class="nav-menu-checkbox">`)
