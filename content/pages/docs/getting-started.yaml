@@ -6,40 +6,40 @@ meta:
   description: "Install lyt and build your first site in minutes"
   agent: true
 
-  agent_content:
-    title: "Getting Started with lyt"
-    description: "Quick start guide for AI agents setting up lyt"
-    
-    sections:
-      - type: "cli"
-        title: "Installation"
-        commands: |
-          # Install via Go
-          go install github.com/b7r-dev/lyt@latest
-          
-          # Verify installation
-          lyt --version
+agent_content:
+  title: "Getting Started with lyt"
+  description: "Quick start guide for AI agents setting up lyt"
+  
+  sections:
+    - type: "cli"
+      title: "Installation"
+      commands: |
+        # Install via Go
+        go install github.com/b7r-dev/lyt@latest
+        
+        # Verify installation
+        lyt --version
 
-      - type: "cli"
-        title: "Alternative: Build from Source"
-        commands: |
-          # Clone and build
-          git clone https://github.com/b7r-dev/lyt
-          cd lyt
-          go build -o lyt .
-          ./lyt --version
+    - type: "cli"
+      title: "Alternative: Build from Source"
+      commands: |
+        # Clone and build
+        git clone https://github.com/b7r-dev/lyt
+        cd lyt
+        go build -o lyt .
+        ./lyt --version
 
-      - type: "default"
-        title: "Global vs Local Usage"
-        body: |
-          **Globally installed** (`go install`):
-          Run `lyt` from any directory. Content path defaults to current dir.
-          
-          **Working in lyt repo** (development/contributing):
-          ```
-          cd lyt
-          go run . build -o ../dist
-          ```
+    - type: "default"
+      title: "Global vs Local Usage"
+      body: |
+        **Globally installed** (`go install`):
+        Run `lyt` from any directory. Content path defaults to current dir.
+        
+        **Working in lyt repo** (development/contributing):
+        ```
+        cd lyt
+        go run . build -o ../dist
+        ```
 
     - type: "cli"
       title: "Create Project"
@@ -96,6 +96,30 @@ meta:
         4. Add content/pages/about.yaml with hero section
         5. Build: lyt build
         6. Open dist/index.html to verify
+
+    - type: "cli"
+      title: "Validate Content"
+      commands: |
+        # Validate content files
+        lyt validate
+        
+        # Validate before building (recommended)
+        lyt build --validate
+        
+        # Strict mode
+        lyt validate --strict
+
+    - type: "default"
+      title: "Schema Validation"
+      body: |
+        lyt validates content against content/schema.yaml.
+        
+        Schema enforces:
+        - Required fields (title, slug)
+        - Valid section types
+        - Field formats
+        
+        Run validation in CI to catch errors early.
 
 sections:
   - id: "hero"
