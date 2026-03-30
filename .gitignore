@@ -6,7 +6,7 @@ dist/.build.cache
 engine/lyt
 
 # Go
-engine/*.sum
+# engine/*.sum  # Don't ignore go.sum - it must be committed!
 
 # Editor
 .DS_Store
