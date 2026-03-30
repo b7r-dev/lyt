@@ -53,7 +53,10 @@ func (s *Scanner) Scan() (*Collection, error) {
 			return nil
 		}
 
-		rel, _ := filepath.Rel(s.dir, path)
+		rel, err := filepath.Rel(s.dir, path)
+		if err != nil {
+			return err
+		}
 		rel = filepath.ToSlash(rel)
 
 		// Skip data files

@@ -88,13 +88,17 @@ func TestScannerSkipsDataDir(t *testing.T) {
 
 	// Create a data directory (should be skipped)
 	dataDir := filepath.Join(tmpDir, "data")
-	os.Mkdir(dataDir, 0755)
+	if err := os.Mkdir(dataDir, 0755); err != nil {
+		t.Fatal(err)
+	}
 
 	dataContent := `
 items:
   - name: "Test"
 `
-	os.WriteFile(filepath.Join(dataDir, "items.yaml"), []byte(dataContent), 0644)
+	if err := os.WriteFile(filepath.Join(dataDir, "items.yaml"), []byte(dataContent), 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	scanner := NewScanner(tmpDir, false)
 	collection, err := scanner.Scan()

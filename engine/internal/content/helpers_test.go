@@ -49,11 +49,17 @@ func TestGetMeta(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			meta := GetMeta(tt.cf)
 
-			gotTitle, _ := meta["title"].(string)
+			gotTitle := ""
+			if v, ok := meta["title"].(string); ok {
+				gotTitle = v
+			}
 			if gotTitle != tt.wantTitle {
 				t.Errorf("title = %q, want %q", gotTitle, tt.wantTitle)
 			}
-			gotSlug, _ := meta["slug"].(string)
+			gotSlug := ""
+			if v, ok := meta["slug"].(string); ok {
+				gotSlug = v
+			}
 			if gotSlug != tt.wantSlug {
 				t.Errorf("slug = %q, want %q", gotSlug, tt.wantSlug)
 			}

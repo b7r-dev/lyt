@@ -25,7 +25,9 @@ func NewCache(cachePath string) *Cache {
 	// Try to load existing cache
 	data, err := os.ReadFile(cachePath)
 	if err == nil {
-		json.Unmarshal(data, c)
+		if err := json.Unmarshal(data, c); err != nil {
+			// Ignore cache load errors, start fresh
+		}
 	}
 	return c
 }
@@ -101,7 +103,7 @@ func (c *Cache) TouchDir(dir string) error {
 func (c *Cache) ShouldRebuild(dirs ...string) bool {
 	for _, dir := range dirs {
 		changed := false
-		filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		_ = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return nil // Skip on error
 			}

@@ -30,7 +30,9 @@ func TestCache(t *testing.T) {
 	}
 
 	// Save and reload
-	c.Save()
+	if err := c.Save(); err != nil {
+		t.Fatal(err)
+	}
 	c2 := NewCache(cachePath)
 	if c2.GetModTime(testPath) != 12345 {
 		t.Error("cache not persisted correctly")
@@ -40,13 +42,17 @@ func TestCache(t *testing.T) {
 func TestCacheShouldRebuild(t *testing.T) {
 	tmpDir := t.TempDir()
 	contentDir := filepath.Join(tmpDir, "content")
-	os.Mkdir(contentDir, 0755)
+	if err := os.Mkdir(contentDir, 0755); err != nil {
+		t.Fatal(err)
+	}
 
 	cachePath := filepath.Join(tmpDir, "cache.json")
 
 	// Create a file
 	testFile := filepath.Join(contentDir, "test.yaml")
-	os.WriteFile(testFile, []byte("test: true"), 0644)
+	if err := os.WriteFile(testFile, []byte("test: true"), 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	// New cache - should rebuild (cache is empty)
 	c := NewCache(cachePath)
@@ -56,7 +62,9 @@ func TestCacheShouldRebuild(t *testing.T) {
 
 	// Save the cache with the file
 	c.Touch(testFile)
-	c.Save()
+	if err := c.Save(); err != nil {
+		t.Fatal(err)
+	}
 
 	// Reload - no changes, should not rebuild
 	c2 := NewCache(cachePath)
