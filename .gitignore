@@ -3,10 +3,10 @@ dist/
 dist/.build.cache
 
 # Binary
-engine/lyt
+/lyt
 
 # Go
-# engine/*.sum  # Don't ignore go.sum - it must be committed!
+# *.sum  # Don't ignore go.sum - it must be committed!
 
 # Editor
 .DS_Store
