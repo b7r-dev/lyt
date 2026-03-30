@@ -66,7 +66,7 @@ sections:
       3. Set:
       
       ```
-      Build command:   lyt build
+      Build command:   cd engine && go build -o lyt && cd .. && ./engine/lyt build
       Publish directory: dist
       ```
       
@@ -89,7 +89,7 @@ sections:
       
       ```
       Framework:      Other
-      Build command: lyt build
+      Build command: cd engine && go build -o lyt && cd .. && ./engine/lyt build
       Output dir:    dist
       ```
       
@@ -111,7 +111,7 @@ sections:
       3. Set:
       
       ```
-      Build command:   lyt build
+      Build command:   cd engine && go build -o lyt && cd .. && ./engine/lyt build
       Output dir:     dist
       ```
       
@@ -168,7 +168,7 @@ sections:
       Build locally or in CI, then rsync:
       
       ```bash
-      lyt build
+      cd engine && go build -o lyt && cd .. && ./engine/lyt build
       rsync -avz --delete dist/ user@vps:/var/www/yoursite/
       ```
       
@@ -205,7 +205,7 @@ sections:
       ```bash
       # In your CI
       export SITE_URL="https://staging.example.com"
-      lyt build
+      cd engine && go build -o lyt && cd .. && ./engine/lyt build
       ```
       
       Reference in templates via build-time substitution if needed.
