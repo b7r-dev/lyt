@@ -1060,32 +1060,32 @@ a:hover {
 /* ─── Dark Mode ─────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark mode: Night sky with fireflies */
-    --color-bg: #0b0f14;
-    --color-surface: #131920;
-    --color-surface-elevated: #1a2029;
-    --color-border: #262e3a;
+    /* Dark mode: Warm night sky with fireflies */
+    --color-bg: #0d0e12;
+    --color-surface: #16181f;
+    --color-surface-elevated: #1e2028;
+    --color-border: #2a2e38;
     
-    --color-text: #e6e2db;
-    --color-text-secondary: #a8a295;
-    --color-muted: #6e6a63;
-    --color-heading: #f0ece4;
+    --color-text: #e4dfd4;
+    --color-text-secondary: #9a9488;
+    --color-muted: #5e5b54;
+    --color-heading: #ece6d8;
     
-    --color-link: #a08050;
-    --color-link-hover: #c4a77d;
+    --color-link: #d4b896;
+    --color-link-hover: #f0dec2;
     
-    /* Accent: warm amber - same shades as light mode */
-    --color-accent-1: #3d3420;
-    --color-accent-2: #5a4a30;
-    --color-accent-3: #7a6240;
+    /* Accent: warm amber - firefly glow */
+    --color-accent-1: #2d2418;
+    --color-accent-2: #453828;
+    --color-accent-3: #6b5230;
     --color-accent-4: #a08050;
-    --color-accent-5: #c4a77d;
+    --color-accent-5: #e4c896;
     
-    --color-system-warning: #c4a77d;
-    --color-system-error: #e57373;
-    --color-system-success: #81c784;
+    --color-system-warning: #d4b896;
+    --color-system-error: #d98a8a;
+    --color-system-success: #8ab87a;
     
-    --color-error: #e57373;
+    --color-error: #d98a8a;
   }
   
   /* Adjustments for dark mode */
