@@ -1,6 +1,0 @@
-{
-  "buildCommand": "cd engine && go run . build",
-  "outputDirectory": "dist",
-  "installCommand": "cd engine && go mod download",
-  "framework": null
-}
