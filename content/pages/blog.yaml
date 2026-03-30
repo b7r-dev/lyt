@@ -1,0 +1,25 @@
+# Blog index
+
+meta:
+  title: "Blog"
+  slug: "/blog"
+  description: "Writing on tools, craft, and the web"
+
+sections:
+  - id: "intro"
+    type: "hero"
+    title: "Blog"
+    body: |
+      Writing on tools, craft, and the web.
+  - id: "posts"
+    type: "default"
+    title: "Posts"
+    cards:
+      - title: "On the shape of tools"
+        body: "The tools we use shape the work we produce. Not just the output — the thinking itself."
+        href: "/blog/shape-of-tools"
+        variant: "default"
+      - title: "Depth without weight"
+        body: "Exploring visual depth through z-planes, shadows, and backdrop-filter."
+        href: "/blog/depth-without-weight"
+        variant: "default"

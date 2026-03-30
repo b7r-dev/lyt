@@ -1,0 +1,273 @@
+# Getting Started
+
+meta:
+  title: "Getting Started"
+  slug: "/docs/getting-started"
+  description: "Install lyt and build your first site in minutes"
+  agent: true
+
+agent_content:
+  title: "Getting Started with lyt"
+  description: "Quick start guide for AI agents setting up lyt"
+  
+  sections:
+    - type: "cli"
+      title: "Installation via make"
+      commands: |
+        # Clone and install system-wide (requires sudo)
+        git clone https://github.com/b7r-dev/lyt
+        cd lyt/engine
+        sudo make install
+        
+        # Verify installation
+        lyt --version
+
+    - type: "cli"
+      title: "Alternative: Go install"
+      commands: |
+        # Install via Go
+        go install github.com/b7r-dev/lyt@latest
+
+    - type: "default"
+      title: "Global vs Local Usage"
+      body: |
+        **Globally installed** (`sudo make install` or `go install`):
+        Run `lyt` from any directory. Content path defaults to current dir.
+        
+        **Working in lyt project** (development/contributing):
+        ```
+        cd lyt/engine
+        go run . build -o ../dist
+        ```
+
+    - type: "cli"
+      title: "Create Project"
+      commands: |
+        # Create new project (global install)
+        lyt init my-site
+        cd my-site
+        lyt build
+        lyt serve -p 8080
+
+    - type: "schema"
+      title: "Project Structure"
+      schema: |
+        my-site/
+        ├── content/           # Your pages, blog posts, config
+        │   ├── pages/
+        │   ├── blog/
+        │   ├── config/
+        │   └── tokens.yaml
+        ├── templates/         # HTML/CSS templates
+        │   └── base.css
+        └── public/            # Static assets (images, fonts)
+
+    - type: "default"
+      title: "Content/Style/Engine Split"
+      body: |
+        lyt maintains clear separation:
+        
+        - **content/** - YAML + Markdown. No code, just data.
+        - **templates/** - HTML structure + CSS. No content, just markup.
+        - **engine/** - Go code. No content, no templates.
+        
+        This means: same engine, different content/style = different sites.
+
+    - type: "link"
+      text: "← Back to Agent Index"
+      href: "/agents"
+
+    - type: "link"
+      text: "→ Content Format Guide"
+      href: "/agents/docs/content"
+
+    - type: "example"
+      title: "AI Agent Prompt for Users"
+      language: "text"
+      example: |
+        # Copy this prompt and give to VS Code/Cursor/Codex:
+        
+        I want to create a static site using lyt (github.com/b7r-dev/lyt).
+        
+        1. Install lyt: go install github.com/b7r-dev/lyt@latest
+        2. Create project: mkdir my-site && cd my-site && lyt init
+        3. Edit content/pages/index.yaml - change hero title to "My Site"
+        4. Add content/pages/about.yaml with hero section
+        5. Build: lyt build
+        6. Open dist/index.html to verify
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "Getting Started"
+    subtitle: "lyt"
+    body: "Install lyt, create a project, and build your first site in under 5 minutes."
+
+  - id: "install"
+    type: "default"
+    title: "Installation"
+    body: |
+      ## Install with Go
+      
+      The fastest way:
+      
+      ```bash
+      go install github.com/b7r-dev/lyt@latest
+      ```
+      
+      ## Install from Source (Recommended)
+      
+      Clone the repo and use the Makefile:
+      
+      ```bash
+      git clone https://github.com/b7r-dev/lyt
+      cd lyt/engine
+      sudo make install
+      ```
+      
+      This installs `lyt` to `/usr/local/bin` on macOS and Linux.
+      
+      ## Verify Installation
+      
+      ```bash
+      lyt --version
+      ```
+      
+      You should see: `lyt 0.2.0`
+
+  - id: "global-vs-local"
+    type: "default"
+    title: "Using lyt"
+    body: |
+      ## Two Ways to Run lyt
+      
+      ### Globally Installed
+      After `sudo make install` or `go install`, run from any directory:
+      
+      ```bash
+      lyt init my-site
+      cd my-site
+      lyt build
+      ```
+      
+      ### Development (Working in the lyt Repo)
+      If you're working on lyt itself or want the latest changes:
+      
+      ```bash
+      cd lyt/engine
+      go run . build -o ../dist
+      ```
+      
+      This runs lyt directly from source without installing it.
+
+  - id: "project-structure"
+    type: "default"
+    title: "Project Structure"
+    body: |
+      ## The Content/Style/Engine Split
+      
+      lyt keeps three things strictly separate:
+      
+      | Directory | Purpose | Contains |
+      |-----------|---------|----------|
+      | `content/` | Your content | YAML pages, blog posts, config |
+      | `templates/` | Your design | HTML, CSS |
+      | `engine/` | The tool | Go code (shared across sites) |
+      
+      This means the same engine can build many different sites—swap out content and templates, and you have a completely different site.
+
+  - id: "new-project"
+    type: "default"
+    title: "Create a New Project"
+    body: |
+      ## Quick Start
+      
+      ```bash
+      mkdir my-site
+      cd my-site
+      lyt init
+      ```
+      
+      This creates:
+      
+      ```
+      my-site/
+      ├── content/
+      │   ├── pages/
+      │   │   ├── index.yaml
+      │   │   ├── about.yaml
+      │   │   └── components.yaml
+      │   ├── blog/
+      │   │   └── hello-world.yaml
+      │   ├── config/
+      │   │   └── site.yaml
+      │   └── tokens.yaml
+      ├── templates/
+      │   └── base.css
+      └── public/
+      ```
+      
+      [Learn about project structure →](/docs/content#project-structure)
+
+  - id: "build"
+    type: "default"
+    title: "Build Your Site"
+    body: |
+      ## Build Command
+      
+      ```bash
+      lyt build
+      ```
+      
+      This generates your site in `./dist/`:
+      
+      ```
+      dist/
+      ├── index.html
+      ├── about.html
+      ├── components.html
+      ├── blog/
+      │   └── hello-world/
+      │       └── index.html
+      ├── base.css
+      ├── tokens.css
+      └── sitemap.xml
+      ```
+      
+      ## Preview
+      
+      ```bash
+      lyt serve
+      ```
+      
+      Opens http://localhost:8080 with live reload on file changes.
+
+  - id: "ai-prompt"
+    type: "default"
+    title: "Start with an AI Agent"
+    body: |
+      ## Let an AI Build Your Site
+
+      Copy this prompt and paste it into VS Code (Copilot), Cursor, Codex, Auggie, or any AI coding assistant:
+
+      ```
+      I want to create a static site using lyt (https://github.com/b7r-dev/lyt). 
+      
+      1. First, install lyt globally: go install github.com/b7r-dev/lyt@latest
+      2. Create a new project: mkdir my-site && cd my-site && lyt init
+      3. Customize the content/pages/index.yaml to change the hero title to "My Awesome Site"
+      4. Add a new page at content/pages/about.yaml with a simple hero
+      5. Build the site: lyt build
+      6. Open dist/index.html in a browser to verify it works
+      
+      Please run these commands and show me the results.
+      ```
+
+      The AI will install lyt, create a project, customize it, and build it—all from your prompt.
+
+  - id: "next-steps"
+    type: "cta"
+    title: "Next Steps"
+    body: "Now that you have a site, learn how to add content and customize."
+    button_text: "Content Guide"
+    button_href: "/docs/content"

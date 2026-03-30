@@ -1,0 +1,280 @@
+# Content Guide
+
+meta:
+  title: "Content Guide"
+  slug: "/docs/content"
+  description: "Learn how to structure content with YAML frontmatter and sections"
+  agent: true
+
+agent_content:
+  title: "Content Format"
+  description: "YAML content structure for lyt"
+  
+  sections:
+    - type: "schema"
+      title: "Page Schema"
+      schema: |
+        # content/pages/*.yaml
+        meta:
+          title: "Page Title"
+          slug: "/page-slug"
+          description: "Description for SEO"
+          agent: true  # Generate agent page?
+        
+        sections:
+          - id: "section-id"
+            type: "hero|default|features|callout|cta|warning|pull-quote|citation|divider"
+            title: "Section Title"
+            body: "Markdown content..."
+
+    - type: "schema"
+      title: "Blog Post Schema"
+      schema: |
+        # content/blog/*.yaml
+        meta:
+          title: "Post Title"
+          slug: "post-slug"
+          description: "Post description"
+          date: "2026-01-01"
+        
+        sections:
+          - type: "default"
+            body: "Post content in Markdown..."
+
+    - type: "link"
+      text: "← Back to Agent Index"
+      href: "/agents"
+    
+    - type: "link"
+      text: "→ Configuration"
+      href: "/agents/docs/configuration"
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "Content Guide"
+    subtitle: "lyt"
+    body: "Structure your content with YAML frontmatter and sections."
+
+  - id: "project-structure"
+    type: "default"
+    title: "Project Structure"
+    body: |
+      A lyt project has this structure:
+      
+      ```
+      my-site/
+      ├── content/
+      │   ├── pages/        # Page YAML files
+      │   ├── blog/        # Blog post YAML files
+      │   ├── config/      # Site configuration
+      │   └── tokens.yaml  # Design tokens
+      ├── templates/
+      │   └── base.css    # Stylesheet
+      ├── public/         # Static assets
+      └── dist/          # Built output
+      ```
+      
+      [Configuration →](/docs/configuration)
+
+  - id: "page-structure"
+    type: "default"
+    title: "Page Structure"
+    body: |
+      Every page is a YAML file with two parts: `meta` and `sections`.
+      
+      ```yaml
+      meta:
+        title: "Page Title"
+        slug: "/about"
+        description: "SEO description"
+
+      sections:
+        - id: "intro"
+          type: "default"
+          title: "Introduction"
+          body: |
+            Your content here.
+      ```
+
+  - id: "frontmatter"
+    type: "default"
+    title: "Frontmatter Fields"
+    body: |
+      The `meta` section defines page metadata:
+      
+      | Field | Required | Description |
+      |-------|----------|-------------|
+      | `title` | Yes | Page title |
+      | `slug` | Yes | URL path (e.g., `/about`) |
+      | `description` | No | SEO meta description |
+      | `date` | No | Publication date (blog only) |
+      | `tags` | No | Array of tags (blog only) |
+      | `draft` | No | Set `true` to exclude from build |
+
+  - id: "section-types"
+    type: "default"
+    title: "Section Types"
+    body: |
+      Sections define content blocks. Available types:
+      
+      | Type | Purpose |
+      |------|---------|
+      | `default` | Standard text content |
+      | `hero` | Full-width page opener |
+      | `features` | Grid of feature cards |
+      | `callout` | Info/tip/note box |
+      | `pull-quote` | Blockquote |
+      | `cta` | Call-to-action banner |
+      | `warning` | Alert box |
+      | `code-example` | Syntax-highlighted code |
+      
+      [Full component reference →](/docs/components)
+
+  - id: "default-section"
+    type: "default"
+    title: "Default Section"
+    body: |
+      The most common section type:
+      
+      ```yaml
+      sections:
+        - id: "intro"
+          type: "default"
+          title: "Introduction"
+          body: |
+            Your content in **Markdown**.
+            
+            - Lists
+            - Work too
+      ```
+
+  - id: "hero-section"
+    type: "default"
+    title: "Hero Section"
+    body: |
+      Create impactful page openers:
+      
+      ```yaml
+      sections:
+        - id: "hero"
+          type: "hero"
+          title: "Page Title"
+          subtitle: "Optional subtitle"
+          body: "Brief intro text."
+          buttons:
+            - text: "Primary Action"
+              href: "/page"
+              variant: "primary"
+            - text: "Secondary"
+              href: "/other"
+              variant: "outline"
+      ```
+      
+      **Button variants**: `primary`, `outline`
+
+  - id: "features-section"
+    type: "default"
+    title: "Features Section"
+    body: |
+      Display a grid of feature cards:
+      
+      ```yaml
+      sections:
+        - id: "features"
+          type: "features"
+          title: "Why Choose Us"
+          cards:
+            - title: "Feature One"
+              body: "Description of the feature."
+            - title: "Feature Two"
+              body: "Another great feature."
+      ```
+
+  - id: "markdown"
+    type: "default"
+    title: "Markdown in Body"
+    body: |
+      All `body` fields support Markdown:
+      
+      ```yaml
+      body: |
+        # Heading
+        
+        Paragraph with **bold** and *italic*.
+        
+        - List item
+        - Another item
+        
+        [Link text](https://example.com)
+        
+        > Blockquote
+      ```
+
+  - id: "break-body"
+    type: "divider"
+    icon: "→"
+
+  - id: "body-vs-content"
+    type: "default"
+    title: "body vs content"
+    body: |
+      **Use `body` for inline content** (recommended):
+      
+      ```yaml
+      sections:
+        - id: "intro"
+          type: "default"
+          title: "Introduction"
+          body: |
+            Your content here. **Markdown** works.
+      ```
+      
+      **Use `content` for external Markdown files** (advanced):
+      
+      ```yaml
+      sections:
+        - id: "long"
+          type: "default"
+          title: "Long Article"
+          content: "@blog/my-article.md"
+      ```
+      
+      The `@` prefix references a file in `content/pages/` or `content/blog/`.
+      
+      **When to use which?**
+      
+      | Field | Use Case |
+      |-------|----------|
+      | `body` | 99% of cases. Short to medium inline content. |
+      | `content` | Very long content in separate file, or content managed by non-YAML tools. |
+
+  - id: "blog-posts"
+    type: "default"
+    title: "Blog Posts"
+    body: |
+      Blog posts go in `content/blog/`:
+      
+      ```yaml
+      meta:
+        title: "My Post"
+        slug: "my-post"
+        date: 2024-01-15
+        tags:
+          - tutorial
+          - lyt
+        draft: false
+
+      sections:
+        - id: "intro"
+          type: "default"
+          body: |
+            Your blog post content...
+      ```
+
+  - id: "next"
+    type: "cta"
+    title: "Learn Components"
+    body: "Dive deeper into the component library for rich content."
+    button_text: "Component Reference"
+    button_href: "/docs/components"

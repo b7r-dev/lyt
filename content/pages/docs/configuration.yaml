@@ -1,0 +1,242 @@
+# Configuration
+
+meta:
+  title: "Configuration"
+  slug: "/docs/configuration"
+  description: "Customize your lyt site with design tokens and site configuration"
+  agent: true
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "Configuration"
+    subtitle: "lyt"
+    body: "Customize your site with design tokens and site configuration."
+
+  - id: "site-config"
+    type: "default"
+    title: "Site Configuration"
+    body: |
+      Site configuration lives in `content/config/site.yaml`.
+      
+      ```yaml
+      meta:
+        title: "My Site"
+        description: "Site description"
+        author: "Your Name"
+        url: "https://example.com"
+
+      nav:
+        - label: "Home"
+          href: "/"
+        - label: "About"
+          href: "/about"
+      ```
+
+  - id: "nav-config"
+    type: "default"
+    title: "Navigation"
+    body: |
+      Define your site's navigation:
+      
+      ```yaml
+      nav:
+        - label: "Home"
+          href: "/"
+        - label: "Blog"
+          href: "/blog"
+        - label: "Docs"
+          href: "/docs"
+          # External links work too
+        - label: "GitHub"
+          href: "https://github.com/b7r-dev/lyt"
+      ```
+
+  - id: "agent-section"
+    type: "default"
+    title: "Agent-Specific Content"
+    body: |
+      Generate parallel HTML pages at `/agents/*` for LLM agents visiting your site. The agent pages contain pure content without decorations (no nav, hero, or footer)—perfect for AI agents that need structured information.
+      
+      **Enable agent pages:**
+      
+      ```yaml
+      agent_section:
+        enabled: true
+        path: "/agents"
+      ```
+      
+      **What it does:**
+      
+      - Generates stripped-down pages at `/agents/{slug}`
+      - Adds "Agents Read This First" link to human-facing pages
+      - Removes nav, hero, footer—keeps only title and content
+      - Code blocks, tables, and structured data remain intact
+
+  - id: "break-tokens"
+    type: "divider"
+    icon: "◆"
+
+  - id: "design-tokens"
+    type: "default"
+    title: "Design Tokens"
+    body: |
+      Customize colors, typography, and spacing in `content/tokens.yaml`.
+      
+      Design tokens become CSS custom properties in `dist/tokens.css`.
+
+  - id: "colors"
+    type: "default"
+    title: "Colors"
+    body: |
+      Define your color palette:
+      
+      ```yaml
+      colors:
+        base:
+          bg: "#f5f5f0"
+          surface: "#ecece6"
+          border: "#d8d8d0"
+          text: "#3d3d3d"
+          heading: "#2a2a25"
+        
+        accent:
+          warm: "#a89880"
+          cool: "#8090a0"
+        
+        system:
+          error: "#8b3a3a"
+          success: "#3a6b3a"
+          warning: "#8b6a30"
+      ```
+      
+      Output:
+      
+      ```css
+      :root {
+        --color-base-bg: #f5f5f0;
+        --color-base-text: #3d3d3d;
+        /* ... */
+      }
+      ```
+
+  - id: "accent"
+    type: "default"
+    title: "Accent: Warm Amber"
+    body: |
+      A single accent color with 5 shades. Works in both light and dark mode.
+      
+      | Shade | Use |
+      |-------|------|
+      | `1` | Subtle backgrounds, hover states |
+      | `2` | Borders, secondary elements |
+      | `3` | Default buttons, links, highlights |
+      | `4` | Active states, emphasis, current page indicator |
+      | `5` | Focus rings, strong CTAs |
+      
+      **Light mode shades:**
+      
+      ```
+      accent-1: #f5e6c8  (subtle)
+      accent-2: #d4b896  (muted)
+      accent-3: #c4a77d  (default)
+      accent-4: #a08050  (strong)
+      accent-5: #6b552f  (intense)
+      ```
+      
+      **Dark mode shades** (inverted for visibility):
+      
+      ```
+      accent-1: #3d3420  (subtle)
+      accent-2: #5a4a30  (muted)
+      accent-3: #7a6240  (default)
+      accent-4: #a08050  (strong)
+      accent-5: #c4a77d  (intense)
+      ```
+
+  - id: "typography"
+    type: "default"
+    title: "Typography"
+    body: |
+      Customize fonts and sizes:
+      
+      ```yaml
+      typography:
+        font_family:
+          body: "Georgia, serif"
+          heading: "'Courier New', monospace"
+          mono: "'Fira Code', monospace"
+        
+        font_size:
+          xs: "0.75rem"
+          sm: "0.875rem"
+          base: "1rem"
+          lg: "1.125rem"
+          xl: "1.25rem"
+          2xl: "1.5rem"
+          3xl: "1.875rem"
+      ```
+
+  - id: "spacing"
+    type: "default"
+    title: "Spacing"
+    body: |
+      Define spacing scale:
+      
+      ```yaml
+      spacing:
+        0: "0"
+        1: "0.25rem"
+        2: "0.5rem"
+        4: "1rem"
+        8: "2rem"
+        16: "4rem"
+      ```
+
+  - id: "z-layers"
+    type: "default"
+    title: "Z-Index Layers"
+    body: |
+      lyt uses 8 z-index layers:
+      
+      ```
+      0:  ground (default)
+      1-4: userland (content components)
+      5-8: system (nav, tooltips, modals)
+      ```
+      
+      ```yaml
+      z:
+        content: "1"
+        elevated: "2"
+        floating: "3"
+        overlay: "5"
+        nav: "6"
+        tooltip: "7"
+        modal: "8"
+      ```
+
+  - id: "dark-mode"
+    type: "default"
+    title: "Dark Mode"
+    body: |
+      lyt supports automatic dark mode via CSS:
+      
+      ```css
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --color-bg: #0b0f14;
+          --color-text: #e6e2db;
+          /* ... */
+        }
+      }
+      ```
+      
+      See `templates/base.css` for the complete dark mode styles.
+
+  - id: "next"
+    type: "cta"
+    title: "Ready to Deploy?"
+    body: "Learn how to deploy your site to the web."
+    button_text: "Deployment Guide"
+    button_href: "/docs/deployment"

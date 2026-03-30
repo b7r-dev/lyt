@@ -1,0 +1,218 @@
+# Deployment
+
+meta:
+  title: "Deployment"
+  slug: "/docs/deployment"
+  description: "Deploy your lyt site to any hosting provider"
+  agent: true
+
+agent_content:
+  title: "Deployment"
+  description: "Deploy lyt sites"
+  
+  sections:
+    - type: "default"
+      title: "Static Site Hosting"
+      body: |
+        lyt outputs pure static HTML/CSS. Deploy anywhere:
+        
+        - Netlify (drag & drop dist folder)
+        - Vercel (`vercel --prod`)
+        - Cloudflare Pages
+        - GitHub Pages
+        - Any static host
+
+    - type: "link"
+      text: "← Back to Agent Index"
+      href: "/agents"
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "Deployment"
+    subtitle: "lyt"
+    body: "Deploy your static site to any hosting provider."
+
+  - id: "overview"
+    type: "default"
+    title: "How It Works"
+    body: |
+      lyt outputs pure static files to `./dist/`. Any static host can serve them.
+      
+      ```bash
+      lyt build
+      ```
+      
+      This creates:
+      
+      ```
+      dist/
+      ├── index.html
+      ├── about.html
+      ├── blog/
+      │   └── post-name/
+      │       └── index.html
+      ├── base.css
+      ├── tokens.css
+      └── sitemap.xml
+      ```
+
+  - id: "netlify"
+    type: "default"
+    title: "Netlify"
+    body: |
+      1. Push your site to GitHub
+      2. Import project in Netlify
+      3. Set:
+      
+      ```
+      Build command:   lyt build
+      Publish directory: dist
+      ```
+      
+      4. Deploy!
+      
+      Or via CLI:
+      
+      ```bash
+      npm install -g netlify-cli
+      netlify deploy --prod --dir=dist
+      ```
+
+  - id: "vercel"
+    type: "default"
+    title: "Vercel"
+    body: |
+      1. Push your site to GitHub
+      2. Import project in Vercel
+      3. Set:
+      
+      ```
+      Framework:      Other
+      Build command: lyt build
+      Output dir:    dist
+      ```
+      
+      4. Deploy!
+      
+      Or via CLI:
+      
+      ```bash
+      npm i -g vercel
+      vercel --prod --output=dist
+      ```
+
+  - id: "cloudflare"
+    type: "default"
+    title: "Cloudflare Pages"
+    body: |
+      1. Push your site to GitHub
+      2. Import project in Cloudflare dashboard
+      3. Set:
+      
+      ```
+      Build command:   lyt build
+      Output dir:     dist
+      ```
+      
+      4. Deploy!
+
+  - id: "github-pages"
+    type: "default"
+    title: "GitHub Pages"
+    body: |
+      Create `.github/workflows/deploy.yml`:
+      
+      ```yaml
+      name: Deploy
+      
+      on:
+        push:
+          branches: [main]
+      
+      jobs:
+        deploy:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v4
+            
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                go-version: '1.21'
+            
+            - name: Build
+              run: |
+                cd engine
+                go build -o lyt .
+                cd ..
+                ./engine/lyt build
+            
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                publish_dir: ./dist
+      ```
+
+  - id: "break-vps"
+    type: "divider"
+    icon: "→"
+
+  - id: "vps"
+    type: "default"
+    title: "VPS / rsync"
+    body: |
+      ## Deploy to VPS
+      
+      Build locally or in CI, then rsync:
+      
+      ```bash
+      lyt build
+      rsync -avz --delete dist/ user@vps:/var/www/yoursite/
+      ```
+      
+      Or use SSH in CI:
+      
+      ```yaml
+      - name: Deploy
+        run: |
+          rsync -avz --delete dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/site/
+      ```
+
+  - id: "cdn"
+    type: "default"
+    title: "CDN / Storage"
+    body: |
+      ## Object Storage + CDN
+      
+      Upload `dist/` to S3/Cloudflare R2/Backblaze, then connect CDN.
+      
+      **AWS S3 example:**
+      
+      ```bash
+      aws s3 sync dist/ s3://your-bucket --delete
+      ```
+      
+      Then configure your CDN to point to the bucket.
+
+  - id: "environment"
+    type: "default"
+    title: "Environment Variables"
+    body: |
+      For per-environment config (e.g., different URLs), use shell variables:
+      
+      ```bash
+      # In your CI
+      export SITE_URL="https://staging.example.com"
+      lyt build
+      ```
+      
+      Reference in templates via build-time substitution if needed.
+
+  - id: "next"
+    type: "cta"
+    title: "Need Help?"
+    body: "Questions? Check the docs or open an issue on GitHub."
+    button_text: "View on GitHub"
+    button_href: "https://github.com/b7r-dev/lyt"

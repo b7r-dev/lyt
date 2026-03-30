@@ -1,0 +1,47 @@
+# Home page
+
+meta:
+  title: "Home"
+  slug: "/"
+  description: "lyt — minimal static sites"
+  agent: true
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "lyt"
+    subtitle: "yaml · markdown · templates"
+    body: "A minimal static site generator that stays out of your way. Edit content in YAML and Markdown. Build with Go. Deploy anywhere."
+    buttons:
+      - text: "Get Started"
+        href: "/docs"
+        variant: "primary"
+      - text: "View on GitHub"
+        href: "https://github.com/b7r-dev/lyt"
+        variant: "outline"
+
+  - id: "principles"
+    type: "features"
+    title: "Principles"
+    cards:
+      - title: "Separation"
+        body: "Engine, content, markup, styling — each in its place. Never the twain shall meet."
+      - title: "Simplicity"
+        body: "YAML for structure. Markdown for prose. Go for everything else. No runtime JS, no build step for templates."
+      - title: "Depth"
+        body: "3 z-planes give depth without weight. Shadows and blur, rendered with CSS alone."
+      - title: "Beige"
+        body: "Warm, desaturated, depth-present. A palette that recedes so your content advances."
+
+  - id: "components"
+    type: "default"
+    title: "Components"
+    body: |
+      lyt includes composable components for rich content:
+
+  - id: "cta"
+    type: "cta"
+    title: "Try lyt today"
+    body: A minimal SSG that gets out of your way. Zero dependencies, pure Go.
+    button_text: "Read the Docs"
+    button_href: "/docs"

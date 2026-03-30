@@ -1,0 +1,24 @@
+# Site config
+
+meta:
+  title: "lyt"
+  description: "yaml, markdown, templates — static sites without the ceremony"
+  url: "https://lyt.b7r.dev"
+  copyright: "Copyright © 2026 Aggressively Beige Holdings, LLC"
+  license: "MIT"
+
+nav:
+  - label: "Home"
+    href: "/"
+  - label: "Blog"
+    href: "/blog"
+  - label: "Docs"
+    href: "/docs"
+  - label: "Components"
+    href: "/components"
+  - label: "About"
+    href: "/about"
+
+# Agent path prefix (pages opt-in via meta.agent: true)
+agent_section:
+  path: "/agents"

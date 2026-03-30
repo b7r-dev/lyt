@@ -1,0 +1,66 @@
+# Documentation
+
+meta:
+  title: "Documentation"
+  slug: "/docs"
+  description: "Complete lyt documentation — static sites without the ceremony"
+
+sections:
+  - id: "intro"
+    type: "hero"
+    title: "Documentation"
+    subtitle: "lyt"
+    body: "Everything you need to build a site with lyt. From installation to deployment."
+
+  - id: "overview"
+    type: "default"
+    title: "Overview"
+    body: |
+      lyt is a minimal static site generator. Write content in YAML, render to HTML, deploy anywhere.
+      
+      **Why lyt?**
+      
+      - Zero runtime JS — Pure HTML and CSS output
+      - YAML + Markdown — Structured content, easy versioning
+      - Go-powered — Sub-second builds, single binary
+      - Components — Rich content without shortcodes
+      
+      [Getting Started →](/docs/getting-started)
+
+  - id: "content"
+    type: "default"
+    title: "Content"
+    body: |
+      Every page is a YAML file. Define structure with sections, render rich content with components.
+      
+      Learn about: frontmatter fields, section types, component library, markdown integration.
+      
+      [Content Guide →](/docs/content) · [Components →](/docs/components)
+
+  - id: "configuration"
+    type: "default"
+    title: "Configuration"
+    body: |
+      Customize your site with design tokens and site configuration.
+      
+      Control: colors, typography, spacing, navigation, site metadata.
+      
+      [Configuration →](/docs/configuration)
+
+  - id: "deployment"
+    type: "default"
+    title: "Deployment"
+    body: |
+      lyt outputs pure static files. Deploy to any hosting provider.
+      
+      Supports: Netlify, Vercel, Cloudflare Pages, GitHub Pages, rsync/VPS.
+      
+      [Deployment Guide →](/docs/deployment)
+
+  - id: "components-preview"
+    type: "default"
+    title: "Components"
+    body: |
+      Rich content components: hero sections, feature grids, callouts, pull-quotes, CTAs, warnings, code blocks.
+      
+      [View Component Gallery →](/components)

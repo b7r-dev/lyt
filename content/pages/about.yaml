@@ -1,0 +1,43 @@
+# About page
+
+meta:
+  title: "About"
+  slug: "/about"
+  description: "About lyt"
+
+sections:
+  - id: "about"
+    type: "about"
+    title: "About lyt"
+    body: |
+      lyt is a static site generator built on a single premise: the tools should disappear.
+
+      No runtime JavaScript. No SPA routing. No React components. No CSS frameworks.
+
+      Just **YAML** for content structure, **Markdown** for prose, **Go templates** for components, and **CSS** for styling.
+
+      The output is a directory of HTML files. Serve them anywhere.
+
+  - id: "how"
+    type: "default"
+    title: "How it works"
+    body: |
+      Content lives in `content/`. Pages are YAML files with a `meta` block and `sections`. Long-form prose is Markdown, referenced via `@filename.md`.
+
+      Templates live in `templates/`. The base CSS in `templates/base.css`. Design tokens in `content/tokens.yaml`.
+
+      Run `lyt build` and get static HTML.
+
+  - id: "philosophy"
+    type: "default"
+    title: "On depth"
+    body: |
+      The design system is built on a 3-plane z-axis metaphor:
+
+      - **Base plane** (`z: 0`): body text, prose
+      - **Middle plane** (`z: 10`): cards, elevated elements
+      - **Top plane** (`z: 100`): navigation, floating elements
+
+      Depth is conveyed through **shadow offsets** and **backdrop blur** — not through color, iconography, or additional markup.
+
+      The result is a sense of layering without the visual noise of most design systems.

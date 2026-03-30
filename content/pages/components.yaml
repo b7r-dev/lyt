@@ -1,0 +1,266 @@
+# Components Gallery
+
+meta:
+  title: "Components"
+  slug: "/components"
+  description: "Visual showcase of all lyt components with code examples"
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "Components"
+    subtitle: "Gallery"
+    body: "Visual showcase of all available lyt components. See how they look and grab the code."
+
+  - id: "intro"
+    type: "default"
+    title: "About This Gallery"
+    body: |
+      This page shows every component lyt supports. Each example is rendered live, with the YAML code displayed below.
+      
+      **For complete documentation**, see the [Component Reference →](/docs/components)
+      
+      **For content basics**, see the [Content Guide →](/docs/content)
+
+  - id: "hero-gallery"
+    type: "hero"
+    title: "Hero Section"
+    subtitle: "Full-width opener"
+    body: "The hero component creates an impactful opening section with title, subtitle, body text, and optional buttons."
+    buttons:
+      - text: "Primary"
+        href: "#"
+        variant: "primary"
+      - text: "Outline"
+        href: "#"
+        variant: "outline"
+
+  - id: "hero-code"
+    type: "code-example"
+    title: "hero.yaml"
+    language: "yaml"
+    code: |
+      - id: "hero"
+        type: "hero"
+        title: "Page Title"
+        subtitle: "Subtitle"
+        body: "Intro text."
+        buttons:
+          - text: "Primary"
+            href: "/page"
+            variant: "primary"
+          - text: "Outline"
+            href: "/other"
+            variant: "outline"
+
+  - id: "features-gallery"
+    type: "features"
+    title: "Features Grid"
+    cards:
+      - title: "Card One"
+        body: "A feature card with title and body."
+      - title: "Card Two"
+        body: "Cards arrange in a responsive grid."
+      - title: "Card Three"
+        body: "Three columns on desktop, fewer on mobile."
+      - title: "Card Four"
+        body: "Add as many cards as you need."
+
+  - id: "features-code"
+    type: "code-example"
+    title: "features.yaml"
+    language: "yaml"
+    code: |
+      - id: "features"
+
+  - id: "break-callouts"
+    type: "divider"
+    icon: "∗"
+
+  - id: "callout-gallery"
+    type: "callout"
+    variant: "info"
+    title: "Info Callout"
+    body: "Use callouts to highlight tips, notes, or important information."
+
+  - id: "callout-tip"
+    type: "callout"
+    variant: "tip"
+    title: "Tip Callout"
+    body: "This is a tip callout. Great for suggestions."
+
+  - id: "callout-note"
+    type: "callout"
+    variant: "note"
+    title: "Note Callout"
+    body: "This is a note callout. Use for reminders."
+
+  - id: "callout-code"
+    type: "code-example"
+    title: "callout.yaml"
+    language: "yaml"
+    code: |
+      # Variants: info, tip, note
+      - id: "callout"
+        type: "callout"
+        variant: "info"
+        title: "Title"
+        body: "Content."
+
+  - id: "quote-gallery"
+    type: "pull-quote"
+    quote: "The best way to predict the future is to invent it."
+    attribution: "Alan Kay"
+
+  - id: "quote-simple"
+    type: "pull-quote"
+    quote: "Simplicity is the ultimate sophistication."
+
+  - id: "quote-code"
+    type: "code-example"
+    title: "pull-quote.yaml"
+    language: "yaml"
+    code: |
+      # With attribution
+      - id: "quote"
+        type: "pull-quote"
+        quote: "Quote text."
+        attribution: "Author"
+      
+      # Without attribution
+      - id: "quote2"
+        type: "pull-quote"
+        quote: "Another quote."
+
+  - id: "break-citations"
+    type: "divider"
+    icon: "§"
+
+  - id: "citation-gallery"
+    type: "citation"
+    text: "The Pragmatic Programmer"
+    url: "https://pragprog.com"
+    publisher: "Addison-Wesley, 2019"
+
+  - id: "citation-code"
+    type: "code-example"
+    title: "citation.yaml"
+    language: "yaml"
+    code: |
+      - id: "cite"
+        type: "citation"
+        text: "Book Title"
+        url: "https://example.com"
+        publisher: "Publisher, Year"
+
+  - id: "cta-gallery"
+    type: "cta"
+    title: "Call to Action"
+    body: "Encourage users to take action with a styled CTA section."
+    button_text: "Get Started"
+    button_href: "/docs/getting-started"
+
+  - id: "cta-code"
+    type: "code-example"
+    title: "cta.yaml"
+    language: "yaml"
+    code: |
+      - id: "cta"
+        type: "cta"
+        title: "Title"
+        body: "Description."
+        button_text: "Button"
+        button_href: "/link"
+
+  - id: "break-warnings"
+    type: "divider"
+    icon: "⚠"
+
+  - id: "warn-default"
+    type: "warning"
+    title: "Default Warning"
+    body: "This is a default warning message."
+
+  - id: "warn-warning"
+    type: "warning"
+    variant: "warning"
+    title: "Warning"
+    body: "Proceed with caution."
+
+  - id: "warn-error"
+    type: "warning"
+    variant: "error"
+    title: "Error"
+    body: "Something went wrong."
+
+  - id: "warn-info"
+    type: "warning"
+    variant: "info"
+    title: "Info"
+    body: "Good to know."
+
+  - id: "warn-success"
+    type: "warning"
+    variant: "success"
+    title: "Success"
+    body: "Everything went well."
+
+  - id: "warning-code"
+    type: "code-example"
+    title: "warning.yaml"
+    language: "yaml"
+    code: |
+      # Variants: default, warning, error, info, success
+      - id: "warn"
+        type: "warning"
+        variant: "warning"
+        title: "Warning"
+        body: "Message."
+
+  - id: "break-code"
+    type: "divider"
+    icon: "</>"
+
+  - id: "code-go"
+    type: "code-example"
+    title: "main.go"
+    language: "go"
+    code: |
+      package main
+
+      import "fmt"
+
+      func main() {
+          fmt.Println("Hello, lyt!")
+      }
+
+  - id: "code-yaml"
+    type: "code-example"
+    title: "config.yaml"
+    language: "yaml"
+    code: |
+      meta:
+        title: My Site
+      
+      sections:
+        - type: hero
+          title: Welcome
+
+  - id: "code-example-code"
+    type: "code-example"
+    title: "code-example.yaml"
+    language: "yaml"
+    code: |
+      - id: "code"
+        type: "code-example"
+        title: "filename.go"
+        language: "go"
+        code: |
+          func main() {}
+
+  - id: "cta-end"
+    type: "cta"
+    title: "Full Reference"
+    body: "See the complete component documentation for all fields and options."
+    button_text: "Component Reference"
+    button_href: "/docs/components"

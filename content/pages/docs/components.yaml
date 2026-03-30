@@ -1,0 +1,313 @@
+# Components Reference
+
+meta:
+  title: "Components Reference"
+  slug: "/docs/components"
+  description: "Complete reference for all lyt content components"
+  agent: true
+
+agent_content:
+  title: "Components Reference"
+  description: "Available content components"
+  
+  sections:
+    - type: "schema"
+      title: "Section Types"
+      schema: |
+        # In sections[].type:
+        hero        - Hero banner with title, subtitle, buttons
+        features    - Grid of feature cards
+        default     - Standard content section
+        callout     - Styled info/warning box
+        cta         - Call-to-action banner
+        warning     - Alert/warning box
+        pull-quote  - Blockquote with attribution
+        citation    - Book/article reference
+        divider     - Visual separator
+
+    - type: "link"
+      text: "← Back to Agent Index"
+      href: "/agents"
+
+sections:
+  - id: "hero"
+    type: "hero"
+    title: "Components Reference"
+    subtitle: "lyt"
+    body: "Complete reference for all content components with YAML examples."
+
+  - id: "overview"
+    type: "default"
+    title: "Overview"
+    body: |
+      Components are section types that render styled HTML. Each has specific YAML fields.
+      
+      [View visual gallery →](/components) · [Content Guide →](/docs/content)
+
+  - id: "hero-ref"
+    type: "default"
+    title: "Hero"
+    body: |
+      Full-width page opener with title, subtitle, body, and optional buttons.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "hero"
+        type: "hero"
+        title: "Page Title"
+        subtitle: "Optional subtitle"
+        body: "Intro paragraph text."
+        buttons:
+          - text: "Primary Button"
+            href: "/page"
+            variant: "primary"
+          - text: "Outline Button"
+            href: "/other"
+            variant: "outline"
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `title` | string | Main heading |
+      | `subtitle` | string | Optional tagline |
+      | `body` | string | Intro text (Markdown supported) |
+      | `buttons` | array | List of button objects |
+      
+      **Button object:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `text` | string | Button label |
+      | `href` | string | Link URL |
+      | `variant` | string | `primary` or `outline` |
+
+  - id: "features-ref"
+    type: "default"
+    title: "Features"
+    body: |
+      Responsive grid of feature cards.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "features"
+        type: "features"
+        title: "Features Title"
+        cards:
+          - title: "Card Title"
+            body: "Card description text."
+          - title: "Another Card"
+            body: "More description here."
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `title` | string | Section heading |
+      | `cards` | array | List of card objects |
+      
+      **Card object:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `title` | string | Card heading |
+      | `body` | string | Card content |
+
+  - id: "callout-ref"
+    type: "default"
+    title: "Callout"
+    body: |
+      Styled information boxes. Variants: `info`, `tip`, `note`.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "info"
+        type: "callout"
+        variant: "info"
+        title: "Info Title"
+        body: "Information text here."
+      
+      - id: "tip"
+        type: "callout"
+        variant: "tip"
+        title: "Pro Tip"
+        body: "Helpful tip text."
+      
+      - id: "note"
+        type: "callout"
+        variant: "note"
+        title: "Note"
+        body: "Note text."
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `variant` | string | `info`, `tip`, or `note` |
+      | `title` | string | Optional title |
+      | `body` | string | Content text |
+
+  - id: "pull-quote-ref"
+    type: "default"
+    title: "Pull Quote"
+    body: |
+      Blockquote with optional attribution.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "quote"
+        type: "pull-quote"
+        quote: "The best way to predict the future is to invent it."
+        attribution: "Alan Kay"
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `quote` | string | Quote text |
+      | `attribution` | string | Optional citation |
+
+  - id: "citation-ref"
+    type: "default"
+    title: "Citation"
+    body: |
+      Reference to external sources (books, articles).
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "cite"
+        type: "citation"
+        text: "Book Title"
+        url: "https://example.com/book"
+        publisher: "Publisher Name, 2024"
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `text` | string | Title of work |
+      | `url` | string | Link to source |
+      | `publisher` | string | Publisher/author info |
+
+  - id: "cta-ref"
+    type: "default"
+    title: "CTA (Call to Action)"
+    body: |
+      Prominent call-to-action banner with button.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "cta"
+        type: "cta"
+        title: "Get Started"
+        body: "Join thousands of users building with lyt."
+        button_text: "Sign Up Free"
+        button_href: "/signup"
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `title` | string | Heading text |
+      | `body` | string | Description text |
+      | `button_text` | string | Button label |
+      | `button_href` | string | Button link |
+
+  - id: "warning-ref"
+    type: "default"
+    title: "Warning"
+    body: |
+      Alert boxes. Variants: `warning`, `error`, `info`, `success`.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "warn"
+        type: "warning"
+        variant: "warning"
+        title: "Warning Title"
+        body: "Warning message text."
+      
+      - id: "error"
+        type: "warning"
+        variant: "error"
+        title: "Error"
+        body: "Error message."
+      
+      - id: "info"
+        type: "warning"
+        variant: "info"
+        title: "Info"
+        body: "Info message."
+      
+      - id: "success"
+        type: "warning"
+        variant: "success"
+        title: "Success"
+        body: "Success message."
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `variant` | string | `warning`, `error`, `info`, `success` |
+      | `title` | string | Alert title |
+      | `body` | string | Alert message |
+
+  - id: "code-ref"
+    type: "default"
+    title: "Code Example"
+    body: |
+      Syntax-highlighted code block with title and language label.
+      
+      **YAML:**
+      
+      ```yaml
+      - id: "example"
+        type: "code-example"
+        title: "filename.yaml"
+        language: "yaml"
+        code: |
+          key: value
+          nested:
+            - item1
+            - item2
+      ```
+      
+      **Fields:**
+      
+      | Field | Type | Description |
+      |-------|------|-------------|
+      | `title` | string | Filename/title |
+      | `language` | string | Language for syntax highlighting |
+      | `code` | string | Code content (preserves whitespace) |
+
+  - id: "visual-gallery"
+    type: "default"
+    title: "Visual Examples"
+    body: |
+      See these components in action:
+      
+      [View Component Gallery →](/components)
+      
+      The gallery shows rendered examples of all components.
+
+  - id: "next"
+    type: "cta"
+    title: "Ready to Build?"
+    body: "Now you know all the components. Start building your site."
+    button_text: "Get Started"
+    button_href: "/docs/getting-started"

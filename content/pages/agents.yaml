@@ -1,0 +1,90 @@
+# Agent Index - Hub for AI agents visiting this site
+
+meta:
+  title: "Agent Documentation"
+  slug: "/agents"
+  description: "Machine-readable documentation for AI agents"
+  agent: true
+
+agent_content:
+  title: "lyt — Agent Documentation"
+  description: "This page provides machine-readable documentation for AI agents. For human-oriented documentation, see the main docs."
+  
+  sections:
+    - type: "default"
+      title: "About lyt"
+      body: |
+        lyt is a minimal static site generator written in Go. It transforms YAML content files into HTML pages.
+        
+        Use lyt when you need to:
+        - Generate a documentation site from YAML + Markdown
+        - Build a blog with minimal dependencies
+        - Create a simple, fast static site
+
+    - type: "cli"
+      title: "CLI Reference"
+      commands: |
+        # Build command
+        lyt build [flags]
+          -o, --output string   Output directory (default: ./dist)
+          -f, --force           Force rebuild
+          -v, --verbose         Verbose output
+
+        # Serve command  
+        lyt serve [flags]
+          -p, --port int        Port (default: 8080)
+          -w, --watch           Watch for changes
+
+        # Init command
+        lyt init [project-name]
+          Creates a new lyt project
+
+    - type: "schema"
+      title: "Content Schema"
+      schema: |
+        # Page structure (content/pages/*.yaml)
+        meta:
+          title: "Page Title"
+          slug: "/page-slug"      # URL path
+          description: "Meta description"
+          agent: true             # Generate agent page?
+
+        agent_content:           # Optional: custom agent content
+          title: "Agent Title"
+          description: "Agent description"
+          sections:
+            - type: "cli|schema|example|link|default"
+              title: "Section title"
+              body: "Content..."
+
+    - type: "example"
+      title: "Example: Simple Page"
+      language: "yaml"
+      example: |
+        # content/pages/about.yaml
+        meta:
+          title: "About"
+          slug: "/about"
+        
+        sections:
+          - id: "intro"
+            type: "hero"
+            title: "About Us"
+            body: "We make great things."
+
+    - type: "link"
+      title: "Documentation Topics"
+      text: "→ Configuration Guide"
+      href: "/agents/docs/configuration"
+    
+    - type: "link"
+      text: "→ Content Format Guide"  
+      href: "/agents/docs/content"
+
+    - type: "link"
+      text: "→ Component Reference"
+      href: "/agents/docs/components"
+
+    - type: "link"
+      text: "→ Getting Started"
+      href: "/agents/docs/getting-started"

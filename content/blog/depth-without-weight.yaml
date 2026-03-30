@@ -1,0 +1,84 @@
+meta:
+  title: "Depth without weight"
+  slug: "depth-without-weight"
+  description: "A note on the 3-plane z-axis model and why it matters for visual hierarchy."
+  date: "2026-03-25"
+  author: "Ben Weller"
+  tags: ["design", "css", "hierarchy"]
+  published: true
+
+sections:
+  - type: default
+    title: The problem with most design systems
+    body: |
+      Most design systems solve the problem of *consistency* without solving the problem of *hierarchy*. They give you a palette, a type scale, a spacing system — and leave it at that.
+
+      The result is flat. Everything is the same visual weight. Headings are bigger than body text, but they don't feel *above* it. Cards float in a sea of same-ness.
+
+  - type: callout
+    variant: note
+    title: What is visual hierarchy?
+    body: |
+      Visual hierarchy is the arrangement of elements that guides the viewer's eye to what matters most. Size, color, position, and **depth** all contribute to this.
+
+  - type: default
+    title: The 3-plane model
+    body: |
+      This design system uses three z-plane levels:
+
+      ```
+      --z-base: 0;    /* body text, prose */
+      --z-middle: 10;  /* cards, elevated elements */
+      --z-top: 100;    /* nav, floating elements */
+      ```
+
+      Combined with shadow offsets and backdrop blur, this creates a sense of depth without relying on color or decoration.
+
+      A card sits on the middle plane. A nav sits on the top plane. Prose sits on the base plane. The hierarchy is spatial, not just typographic.
+
+  - type: default
+    title: Implementation
+    body: |
+      The shadows use a stacked offset technique:
+
+      ```
+      box-shadow:
+        2px 2px 0 0 var(--color-border),
+        4px 4px 0 0 color-mix(in srgb, var(--color-border) 30%, transparent);
+      ```
+
+      Two shadows, two offsets. The first is solid. The second is faded, simulating distance. No extra elements, no pseudo-elements, no images.
+
+      The backdrop blur on the nav:
+
+      ```
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      ```
+
+      Pure CSS. Renders on the GPU. No resources.
+
+  - type: warning
+    variant: warning
+    title: Browser support
+    body: |
+      The `backdrop-filter` property has good support in modern browsers but may not work in older ones. Fallback to solid backgrounds where needed.
+
+  - type: pull-quote
+    quote: "Constraints breed creativity. By removing color as a hierarchy signal, the depth model has to do more work."
+    attribution: The design philosophy
+
+  - type: default
+    title: The beige constraint
+    body: |
+      The palette is deliberately desaturated. Warm off-whites and muted grays. No primary colors. No gradients.
+
+      This is a *constraint*, not a limitation. By removing color as a hierarchy signal, the depth model has to do more work. The shadows and blur carry more weight.
+
+      The result: a calm, depth-present aesthetic that lets content be the visual focus.
+
+  - type: citation
+    text: "CSS Secrets"
+    url: "https://www.oreilly.com/library/view/css-secrets/9781491962074/"
+    publisher: "O'Reilly Media"
+    year: "2016"

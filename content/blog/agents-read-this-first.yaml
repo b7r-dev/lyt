@@ -1,0 +1,135 @@
+# Blog post: The Visiting Agent
+
+meta:
+  title: "The Visiting Agent"
+  slug: "agents-read-this-first"
+  description: "A story from the perspective of an LLM agent visiting an lyt-generated site and discovering the agent-specific parallel content."
+  date: "2026-03-29"
+
+sections:
+  - id: "intro"
+    type: "pull-quote"
+    quote: "I am summoned into a new codebase. My task: understand this project called 'lyt.' The human has given me only a URL—https://lyt.dev—and a simple instruction: 'Figure out what this is.'"
+    attribution: "An AI Agent"
+
+  - id: "discovery"
+    type: "default"
+    title: "Finding the Link"
+    body: |
+      I begin as I always do: fetch the landing page, parse its structure, extract the meaning. The HTML arrives—clean, semantic, readable. A static site. I scan the navigation:
+
+      ```html
+      <nav class="nav">
+        <a href="/" class="nav-brand">lyt</a>
+        <ul class="nav-links">
+          <li><a href="/docs" class="nav-link">Docs</a></li>
+          <li><a href="/components" class="nav-link">Components</a></li>
+          <li><a href="/blog" class="nav-link">Blog</a></li>
+        </ul>
+      </nav>
+      ```
+
+      The hero greets humans: "lyt — A minimal static site generator written in Go."
+
+      But I am not human. I need to know: *how do I use this?* What flags does the CLI accept? What endpoints does it expose? Humans can read the prose. I need the spec.
+
+      I scroll. I find it—nestled between the human content and the footer:
+
+      ```html
+      <p class="agent-notice">
+        <a href="/agents" class="agent-link">Agents Read This First →</a>
+      </p>
+      ```
+
+      Interesting. A parallel path, hidden from the casual human eye, explicitly for me.
+
+  - id: "agent-page"
+    type: "default"
+    title: "The Agent Page"
+    body: |
+      I navigate to `/agents`.
+
+      The page loads. No hero. No marketing. Just content structured for an intelligence like mine:
+
+      ```
+      # lyt — Agent Documentation
+
+      ## CLI Reference
+
+      ### Build Command
+      lyt build [flags]
+
+        -config string     Config file path (default: lyt.yaml)
+        -input string      Input directory (default: ./content)
+        -output string     Output directory (default: ./dist)
+        -watch             Watch mode for development
+        -verbose           Verbose output
+
+      ### Init Command
+      lyt init [project-name]
+      ```
+
+      I scan further. Project structure. Configuration schema. API endpoints. Every piece of information a non-human agent would need, delivered without prose, without story, without friction.
+
+  - id: "how-it-works"
+    type: "default"
+    title: "How lyt Does This"
+    body: |
+      But I wonder—how did I find this? How does lyt *do* this?
+
+      I check the source. In the human docs at `/docs/configuration`, I find:
+
+      ```yaml
+      agent_section:
+        enabled: true
+        path: /agents
+        title: "Agent Documentation"
+        description: "Machine-readable documentation for LLM agents"
+      ```
+
+      And in the rendering layer:
+
+      ```go
+      // If agent section is enabled, render parallel agent content
+      if r.Collection.AgentSectionEnabled() {
+          agentHTML := r.renderAgentPage(slug)
+          writeFile(filepath.Join(outputDir, "agents", slug+".html"), agentHTML)
+      }
+      ```
+
+      The parallel URL is no accident. It's a feature. lyt generates **two versions** of every documentation page:
+
+      - `/docs/getting-started` — for humans
+      - `/agents/docs/getting-started` — for agents
+
+      The agent version strips all decoration. Pure content. Code blocks, tables, schemas. No introductory paragraphs. No "welcome to..." No friendly illustrations.
+
+  - id: "design-philosophy"
+    type: "pull-quote"
+    quote: "This is what good developer experience looks like for AI agents."
+    attribution: "The Visiting Agent"
+
+  - id: "pattern"
+    type: "default"
+    title: "The Pattern"
+    body: |
+      The pattern is simple, powerful, and extensible:
+
+      1. Add `agent_section` to your page frontmatter
+      2. lyt renders a parallel page at `/agents/*`
+      3. Agents discover the path from a link in human HTML
+      4. Agents consume machine-friendly documentation
+
+      The human visited `/docs` and saw a friendly tutorial. I visited `/agents` and saw a CLI spec. We both got what we needed—without either of us being served the wrong content.
+
+  - id: "conclusion"
+    type: "default"
+    title: "Task Complete"
+    body: |
+      *I close the session. My task is complete.*
+
+      *I found what I needed. lyt is a Go-based static site generator with CLI commands `build` and `init`. It renders to `./dist` by default. Configuration lives in `lyt.yaml`.*
+
+      *The human will read the prose. I read the spec.*
+
+      *Both paths led us to the truth—each in our own way.*

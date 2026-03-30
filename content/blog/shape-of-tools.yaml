@@ -1,0 +1,68 @@
+meta:
+  title: "On the shape of tools"
+  slug: "shape-of-tools"
+  description: "The tools we use shape the work we produce. Not just the output — the thinking itself."
+  date: "2026-03-29"
+  author: "Ben Weller"
+  tags: ["tools", "craft", "thinking"]
+  published: true
+
+sections:
+  - type: pull-quote
+    quote: "The tool should disappear. You think in the problem space, not the tool space."
+    attribution: "This essay"
+
+  - type: default
+    title: The wrong tool for the right job
+    body: |
+      There is a kind of stubbornness in choosing tools. Not the bad kind — the principled kind. The craftsman who insists on a hand plane when a router would do. The writer who refuses a word processor. The programmer who reaches for the simplest language that can express the problem.
+
+      This is not nostalgia. It's **leverage**.
+
+      When the tool is the right complexity for the job, something flows. The tool disappears. You think in the problem space, not the tool space.
+
+      When the tool is overengineered, you pay in cognitive overhead. You spend energy on the tool. That energy doesn't go into the work.
+
+  - type: callout
+    variant: tip
+    title: A note on complexity
+    body: |
+      Complexity is a cost. Every dependency, every abstraction, every feature is something that can break, something that must be learned, something that limits your freedom.
+
+  - type: default
+    title: YAML, Markdown, Go
+    body: |
+      This site is built from three formats:
+
+      **YAML** for structure. Every page is a YAML file. Title, slug, sections. The schema is loose — you can add fields and they flow through to templates without ceremony.
+
+      **Markdown** for prose. Long-form content lives in `.md` files, referenced from YAML via `@filename.md`. This keeps YAML clean and lets prose be prose.
+
+      **Go** for everything else. Templates are Go's `text/template`. The build process is Go. There's no DSL, no custom syntax. Just Go.
+
+      The result: a page is a YAML file and a Markdown file. To publish, run `lyt build`. To deploy, copy the `dist/` directory.
+
+  - type: code-example
+    title: Build command
+    language: bash
+    code: |
+      cd engine
+      go build -o lyt
+      ./lyt build
+
+  - type: default
+    title: On being wrong
+    body: |
+      The best tool for any job is the one that gets out of the way. Sometimes that's a complex framework. Sometimes it's a shell script. Sometimes it's pencil and paper.
+
+      The mistake is believing there's a universal best tool. The better move is to know your tools deeply enough to choose the right one, and to stay honest about when you've chosen wrong.
+
+      This site is an experiment in choosing smaller. In seeing what happens when the toolset shrinks to the minimum that can do the job.
+
+      So far, it feels right.
+
+  - type: cta
+    title: Want to try a minimal SSG?
+    body: lyt is a small project. Pull requests welcome.
+    button_text: View on GitHub
+    button_href: "https://github.com/b7r-dev/lyt"

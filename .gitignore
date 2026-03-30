@@ -1,0 +1,21 @@
+# Build output
+dist/
+dist/.build.cache
+
+# Binary
+engine/lyt
+
+# Go
+engine/*.sum
+
+# Editor
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.arbor/
