@@ -21,10 +21,10 @@ body {
   line-height: var(--leading-normal, 1.5);
   color: var(--color-text, #3d3d3d);
   background-color: var(--color-bg, #f5f5f0);
-  /* Subtle warm depth gradient - very light touch */
+  /* Universal depth gradient - warm glow works in both light and dark */
   background-image: 
-    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(245, 240, 230, 0.5) 0%, transparent 50%),
-    linear-gradient(180deg, #f5f5f0 0%, #f0f0e8 100%);
+    radial-gradient(ellipse 60% 30% at 50% -10%, rgba(220, 180, 120, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-bg, #f5f5f0) 0%, var(--color-bg, #f5f5f0) 100%);
   background-attachment: fixed;
   min-height: 100dvh;
   display: flex;
@@ -1065,17 +1065,13 @@ a:hover {
 /* ─── Dark Mode ─────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark mode: Warm night sky with fireflies - subtle depth gradient */
+    /* Dark mode: Warm night sky with fireflies */
     --color-bg: #111215;
     --color-surface: #16181f;
     --color-surface-elevated: #1e2028;
     --color-border: #2a2e38;
 
-    /* Subtle warm depth gradient - barely perceptible */
-    background: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(40, 35, 28, 0.4) 0%, transparent 60%),
-      linear-gradient(180deg, #111215 0%, #0d0e10 100%);
-    background-attachment: fixed;
+    /* Universal gradient works in both modes */
     
     --color-text: #e4dfd4;
     --color-text-secondary: #9a9488;
