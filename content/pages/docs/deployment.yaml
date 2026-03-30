@@ -57,6 +57,25 @@ sections:
       └── sitemap.xml
       ```
 
+  - id: "vercel-simple"
+    type: "default"
+    title: "Vercel (Auto-Deploy)"
+    body: |
+      The simplest option — Vercel builds and deploys automatically:
+      
+      1. Import your GitHub repo in Vercel
+      2. Set:
+      
+      ```
+      Framework:      Other
+      Build command:  cd engine && go run . build
+      Output dir:     dist
+      ```
+      
+      3. Deploy!
+      
+      Vercel runs the build and serves `dist/` automatically.
+
   - id: "netlify"
     type: "default"
     title: "Netlify (from GitHub Actions)"
