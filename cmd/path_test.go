@@ -72,3 +72,109 @@ func TestBlogSlugToPath(t *testing.T) {
 		})
 	}
 }
+
+func TestAgentSlugToPath(t *testing.T) {
+	tests := []struct {
+		name            string
+		relPath         string
+		agentPathPrefix string
+		want            string
+	}{
+		{
+			name:            "agent hub",
+			relPath:         "pages/agents.yaml",
+			agentPathPrefix: "agents",
+			want:            "dist/agents/index.html",
+		},
+		{
+			name:            "docs page under agents",
+			relPath:         "pages/docs/getting-started.yaml",
+			agentPathPrefix: "agents",
+			want:            "dist/agents/docs/getting-started/index.html",
+		},
+		{
+			name:            "docs configuration under agents",
+			relPath:         "pages/docs/configuration.yaml",
+			agentPathPrefix: "agents",
+			want:            "dist/agents/docs/configuration/index.html",
+		},
+		{
+			name:            "custom agent path prefix",
+			relPath:         "pages/docs/deployment.yaml",
+			agentPathPrefix: "/ai",
+			want:            "dist/ai/docs/deployment/index.html",
+		},
+		{
+			name:            "blog post under agents (flattened)",
+			relPath:         "blog/test-post.yaml",
+			agentPathPrefix: "agents",
+			want:            "dist/agents/test-post/index.html",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := agentSlugToPath(tt.relPath, "dist", tt.agentPathPrefix)
+			if got != tt.want {
+				t.Errorf("agentSlugToPath(%q, %q) = %q, want %q", tt.relPath, tt.agentPathPrefix, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGetSlug(t *testing.T) {
+	tests := []struct {
+		name string
+		data map[string]interface{}
+		want string
+	}{
+		{
+			name: "basic slug",
+			data: map[string]interface{}{
+				"meta": map[string]interface{}{
+					"slug": "/about",
+				},
+			},
+			want: "/about",
+		},
+		{
+			name: "docs slug",
+			data: map[string]interface{}{
+				"meta": map[string]interface{}{
+					"slug": "/docs/getting-started",
+				},
+			},
+			want: "/docs/getting-started",
+		},
+		{
+			name: "no meta",
+			data: map[string]interface{}{},
+			want: "",
+		},
+		{
+			name: "no slug field",
+			data: map[string]interface{}{
+				"meta": map[string]interface{}{},
+			},
+			want: "",
+		},
+		{
+			name: "slug not a string",
+			data: map[string]interface{}{
+				"meta": map[string]interface{}{
+					"slug": 123,
+				},
+			},
+			want: "",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := getSlug(tt.data)
+			if got != tt.want {
+				t.Errorf("getSlug() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}

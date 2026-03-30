@@ -138,3 +138,173 @@ func TestContentFileTypes(t *testing.T) {
 		t.Errorf("expected 1 blog post, got %d", len(collection.Blog))
 	}
 }
+
+func TestHasAgentPage(t *testing.T) {
+	tests := []struct {
+		name     string
+		cf       ContentFile
+		expected bool
+	}{
+		{
+			name: "agent true with agent_content",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{
+						"agent": true,
+					},
+					"agent_content": map[string]interface{}{
+						"title": "Test",
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "agent true but no agent_content",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{
+						"agent": true,
+					},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "agent false with agent_content",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{
+						"agent": false,
+					},
+					"agent_content": map[string]interface{}{
+						"title": "Test",
+					},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "no agent field",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "empty data",
+			cf: ContentFile{
+				Data: map[string]interface{}{},
+			},
+			expected: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Create a collection to use HasAgentPage
+			c := &Collection{}
+			result := c.HasAgentPage(tt.cf)
+			if result != tt.expected {
+				t.Errorf("HasAgentPage() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}
+
+func TestGetAgentContent(t *testing.T) {
+	tests := []struct {
+		name     string
+		cf       ContentFile
+		expected bool
+	}{
+		{
+			name: "has agent_content",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"agent_content": map[string]interface{}{
+						"title":       "Test Title",
+						"description": "Test description",
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "no agent_content",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{},
+				},
+			},
+			expected: false,
+		},
+		{
+			name:     "empty data",
+			cf:       ContentFile{},
+			expected: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := GetAgentContent(tt.cf)
+			hasResult := result != nil
+			if hasResult != tt.expected {
+				t.Errorf("GetAgentContent() returned %v, want %v", hasResult, tt.expected)
+			}
+		})
+	}
+}
+
+func TestShowAgentHubLink(t *testing.T) {
+	tests := []struct {
+		name     string
+		cf       ContentFile
+		expected bool
+	}{
+		{
+			name: "agent true shows link",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{
+						"agent": true,
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "agent false hides link",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{
+						"agent": false,
+					},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "no agent field",
+			cf: ContentFile{
+				Data: map[string]interface{}{
+					"meta": map[string]interface{}{},
+				},
+			},
+			expected: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Collection{}
+			result := c.ShowAgentHubLink(tt.cf)
+			if result != tt.expected {
+				t.Errorf("ShowAgentHubLink() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}
