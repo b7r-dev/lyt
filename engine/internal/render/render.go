@@ -27,7 +27,8 @@ const PageTemplate = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{{.Description}}">
   <meta name="generator" content="lyt">
-  <meta name="theme-color" content="#f5f5f0">
+  <meta name="theme-color" content="#f5f5f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111215" media="(prefers-color-scheme: dark)">
   
   <title>{{.Title}} | {{.SiteTitle}}</title>
   
