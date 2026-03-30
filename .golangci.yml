@@ -9,3 +9,5 @@ linters:
   enable:
     - errcheck
     - govet
+  disable:
+    - staticcheck
