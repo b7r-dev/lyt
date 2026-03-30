@@ -8,21 +8,26 @@ lyt is a minimal static site generator. No runtime JavaScript. No build step for
 
 ```
 lyt/
-├── engine/        ← Go source (the tool)
+├── cmd/           ← CLI commands (Go)
+├── internal/      ← Core libraries (Go)
 ├── content/       ← Site content (YAML, Markdown)
 ├── templates/     ← Styling (CSS)
-├── public/       ← Static assets (fonts, images)
-└── dist/         ← Built output (generated)
+├── public/        ← Static assets (fonts, images)
+└── dist/          ← Built output (generated)
 ```
 
-Engine, content, markup, and styling are kept strictly separate. They only meet at build time.
+Code, content, markup, and styling are kept strictly separate. They only meet at build time.
 
 ## Quick start
 
 ```bash
-# Build the binary
-cd engine
-go build -o lyt
+# Install
+go install github.com/b7r-dev/lyt@latest
+
+# Or build from source
+git clone https://github.com/b7r-dev/lyt.git
+cd lyt
+go build -o lyt .
 
 # Build the site
 ./lyt build

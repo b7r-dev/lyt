@@ -207,10 +207,8 @@ sections:
             
             - name: Build
               run: |
-                cd engine
                 go build -o lyt .
-                cd ..
-                ./engine/lyt build
+                ./lyt build
             
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v3

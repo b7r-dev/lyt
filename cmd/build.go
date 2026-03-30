@@ -38,7 +38,7 @@ func detectProjectRoot() (string, error) {
 		return cwd, nil
 	}
 
-	// Check parent directory (in case user runs from engine/ subdir)
+	// Check parent directory (legacy fallback for nested projects)
 	parent := filepath.Dir(cwd)
 	valid = true
 	for _, dir := range requiredDirs {

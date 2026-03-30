@@ -49,6 +49,6 @@ This ensures:
 
 ## Related
 
-- Implementation: [tokens/processor.go](../../engine/internal/tokens/processor.go)
+- Implementation: [tokens/processor.go](../../internal/tokens/processor.go)
 - Input: [content/tokens.yaml](../../content/tokens.yaml)
 - Output: [dist/tokens.css](../../dist/tokens.css)
