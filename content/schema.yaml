@@ -1,0 +1,308 @@
+# lyt Content Schema Definition
+# This file defines the expected structure for all lyt content files.
+# Used by the 'lyt validate' command to check content validity.
+
+# Schema version
+version: "1.0"
+
+# Page content schema (content/pages/*.yaml)
+page:
+  required_fields:
+    - meta
+  field_meta:
+    meta:
+      type: object
+      required:
+        - title
+        - slug
+      properties:
+        title:
+          type: string
+          description: "Page title"
+        slug:
+          type: string
+          description: "URL path (e.g., /about, /docs/getting-started)"
+          pattern: "^/.*"
+        description:
+          type: string
+          description: "SEO meta description"
+        agent:
+          type: boolean
+          description: "Generate agent-specific page version"
+          default: false
+
+    sections:
+      type: array
+      description: "Content sections"
+      items:
+        type: object
+        required:
+          - type
+        properties:
+          id:
+            type: string
+            description: "Section identifier for anchors"
+          type:
+            type: string
+            enum:
+              - hero
+              - default
+              - features
+              - callout
+              - cta
+              - warning
+              - pull-quote
+              - citation
+              - code-example
+              - divider
+              - about
+          title:
+            type: string
+          subtitle:
+            type: string
+          body:
+            type: string
+          content:
+            type: string
+            description: "External markdown file reference (@filename.md)"
+          variant:
+            type: string
+          quote:
+            type: string
+          attribution:
+            type: string
+          text:
+            type: string
+          url:
+            type: string
+          publisher:
+            type: string
+          button_text:
+            type: string
+          button_href:
+            type: string
+          language:
+            type: string
+          code:
+            type: string
+          schema:
+            type: string
+          example:
+            type: string
+          icon:
+            type: string
+          commands:
+            type: string
+          cards:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                icon:
+                  type: string
+                href:
+                  type: string
+          buttons:
+            type: array
+            items:
+              type: object
+              properties:
+                text:
+                  type: string
+                href:
+                  type: string
+                variant:
+                  type: string
+                  enum:
+                    - primary
+                    - outline
+
+    agent_content:
+      type: object
+      description: "Agent-specific content (requires meta.agent: true)"
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        sections:
+          type: array
+          items:
+            type: object
+            required:
+              - type
+            properties:
+              type:
+                type: string
+                enum:
+                  - default
+                  - cli
+                  - schema
+                  - example
+                  - link
+              title:
+                type: string
+              body:
+                type: string
+              commands:
+                type: string
+              schema:
+                type: string
+              example:
+                type: string
+              language:
+                type: string
+              text:
+                type: string
+              href:
+                type: string
+
+# Blog post schema (content/blog/*.yaml)
+blog:
+  required_fields:
+    - meta
+  field_meta:
+    meta:
+      type: object
+      required:
+        - title
+        - slug
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+          description: "URL slug (e.g., my-post)"
+          pattern: "^[a-z0-9-]+$"
+        description:
+          type: string
+        date:
+          type: string
+          description: "Publication date (YYYY-MM-DD)"
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+        author:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        draft:
+          type: boolean
+        published:
+          type: boolean
+
+    body:
+      type: string
+      description: "Fallback content (if no sections)"
+
+    sections:
+      type: array
+      description: "Blog post content sections"
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          type:
+            type: string
+            enum:
+              - default
+              - hero
+              - callout
+              - pull-quote
+              - citation
+              - code-example
+              - warning
+              - cta
+              - divider
+          title:
+            type: string
+          body:
+            type: string
+          content:
+            type: string
+          # Add other section fields as needed
+
+# Site config schema (content/config/*.yaml)
+config:
+  field_meta:
+    meta:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        copyright:
+          type: string
+        license:
+          type: string
+
+    nav:
+      type: array
+      items:
+        type: object
+        required:
+          - label
+          - href
+        properties:
+          label:
+            type: string
+          href:
+            type: string
+
+    agent_section:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        path:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+
+# Design tokens schema (content/tokens.yaml)
+tokens:
+  field_meta:
+    colors:
+      type: object
+      description: "Color palette definitions"
+    typography:
+      type: object
+      properties:
+        font_family:
+          type: object
+        font_size:
+          type: object
+        font_weight:
+          type: object
+        line_height:
+          type: object
+        letter_spacing:
+          type: object
+    spacing:
+      type: object
+      description: "Spacing scale values"
+    z:
+      type: object
+      description: "Z-index layer values"
+    layout:
+      type: object
+
+# Component schema (content/components/*.yaml)
+component:
+  required_fields:
+    - name
+  field_meta:
+    name:
+      type: string
+      description: "Component identifier"
+    # Components can have arbitrary fields

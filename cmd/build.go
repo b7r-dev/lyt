@@ -57,6 +57,7 @@ func detectProjectRoot() (string, error) {
 
 var buildOutput string
 var forceRebuild bool
+var validateBuild bool
 
 var buildCmd = &cobra.Command{
 	Use:   "build",
@@ -69,6 +70,14 @@ func runBuild(cmd *cobra.Command, args []string) error {
 	projectRoot, err := detectProjectRoot()
 	if err != nil {
 		return err
+	}
+
+	// Run validation if --validate flag is set
+	if validateBuild {
+		fmt.Println("🔍 Validating content before build...")
+		if err := runValidate(cmd, nil); err != nil {
+			return fmt.Errorf("validation failed: %w", err)
+		}
 	}
 
 	start := time.Now()
@@ -153,6 +162,11 @@ func runBuild(cmd *cobra.Command, args []string) error {
 	pagesGenerated := 0
 	agentPathPrefix := collection.GetAgentPath()
 	for _, page := range collection.Pages {
+		if verbose {
+			slug := getSlug(page.Data)
+			hasAgent := collection.HasAgentPage(page)
+			fmt.Printf("   → %s (slug: %q, agent: %v)\n", page.RelPath, slug, hasAgent)
+		}
 		html, err := renderer.RenderPage(page)
 		if err != nil {
 			fmt.Printf("   ⚠️  %s: %v\n", page.RelPath, err)
@@ -184,6 +198,11 @@ func runBuild(cmd *cobra.Command, args []string) error {
 
 	// Step 6: Generate blog posts
 	for _, post := range collection.Blog {
+		if verbose {
+			slug := getSlug(post.Data)
+			hasAgent := collection.HasAgentPage(post)
+			fmt.Printf("   → %s (slug: %q, agent: %v)\n", post.RelPath, slug, hasAgent)
+		}
 		html, err := renderer.RenderBlogPost(post)
 		if err != nil {
 			fmt.Printf("   ⚠️  %s: %v\n", post.RelPath, err)
@@ -348,4 +367,5 @@ func init() {
 	rootCmd.AddCommand(buildCmd)
 	buildCmd.Flags().StringVarP(&buildOutput, "output", "o", "", "Output directory (default: ./dist)")
 	buildCmd.Flags().BoolVarP(&forceRebuild, "force", "f", false, "Force rebuild even when no changes detected")
+	buildCmd.Flags().BoolVarP(&validateBuild, "validate", "", false, "Validate content against schema before building")
 }
