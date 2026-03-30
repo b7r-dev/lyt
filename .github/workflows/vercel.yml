@@ -20,10 +20,16 @@ jobs:
           cd engine
           go run . build
 
+      - name: Show dist contents
+        run: |
+          echo "=== dist contents ==="
+          ls -la dist/
+          echo "=== index.html exists? ==="
+          test -f dist/index.html && echo "YES" || echo "NO"
+
       - name: Deploy to Vercel
         run: |
           npm i -g vercel@latest
-          # Deploy the pre-built dist folder directly
           vercel deploy dist/ --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
