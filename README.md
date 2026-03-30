@@ -1,6 +1,6 @@
 # lyt
 
-**[Live Site](https://lyt.b7r.dev)** · **[GitHub](https://github.com/b7r-dev/lyt)**
+**[Live Site](https://lyt.b7r.dev)** · **[GitHub](https://github.com/b7r-dev/lyt)** · **[Introduction for Agents](https://lyt.b7r.dev/agents)**
 
 lyt is a minimal static site generator. No runtime JavaScript. No build step for templates. Just YAML, Markdown, and Go.
 

@@ -104,6 +104,13 @@ a:hover {
   opacity: 0.7;
 }
 
+/* Mobile nav */
+@media (max-width: 640px) {
+  .nav-github {
+    display: none;
+  }
+}
+
 .nav-links {
   display: flex;
   list-style: none;

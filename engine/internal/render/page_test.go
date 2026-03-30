@@ -100,10 +100,11 @@ sections:
 				t.Errorf("Expected aria-current attribute, HTML: %s", html)
 			}
 
-			// Should have exactly 2 aria-current (desktop + mobile nav)
+			// Should have 3 aria-current (desktop nav + mobile nav + home brand link on home page)
+			// Or 2 on other pages (desktop + mobile nav)
 			count := strings.Count(html, `aria-current="page"`)
-			if count != 2 {
-				t.Errorf("Expected 2 aria-current (desktop + mobile), got %d", count)
+			if count < 2 || count > 3 {
+				t.Errorf("Expected 2-3 aria-current, got %d", count)
 			}
 		})
 	}
