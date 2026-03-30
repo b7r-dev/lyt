@@ -6,6 +6,53 @@ meta:
   description: "Customize your lyt site with design tokens and site configuration"
   agent: true
 
+agent_content:
+  title: "Configuration"
+  description: "Configure lyt sites"
+  
+  sections:
+    - type: "default"
+      title: "Site Configuration"
+      body: |
+        Site config lives in `content/config/site.yaml`.
+        
+        Key fields:
+        - `meta.*` - title, description, url, copyright, license
+        - `nav[]` - navigation links
+        - `agent_section.path` - agent content prefix (default: /agents)
+
+    - type: "default"
+      title: "Design Tokens"
+      body: |
+        Tokens live in `content/tokens.yaml`.
+        
+        Categories:
+        - `colors.*` - base, accent, system colors
+        - `typography.*` - fonts, sizes, weights
+        - `spacing.*` - scale values
+        - `z.*` - layer values
+
+    - type: "cli"
+      title: "Validate Command"
+      commands: |
+        lyt validate          # Check content files
+        lyt validate --strict # Warnings as errors
+        lyt build --validate  # Build with validation
+
+    - type: "schema"
+      title: "Schema File"
+      schema: |
+        page:
+          required_fields:
+            - meta
+        blog:
+          required_fields:
+            - meta
+
+    - type: "link"
+      text: "← Back to Agent Index"
+      href: "/agents"
+
 sections:
   - id: "hero"
     type: "hero"

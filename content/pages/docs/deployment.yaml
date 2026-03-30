@@ -272,6 +272,26 @@ sections:
       
       Reference in templates via build-time substitution if needed.
 
+  - id: "validation"
+    type: "default"
+    title: "Validating Content"
+    body: |
+      Use schema validation to catch content errors before deployment:
+
+      ```bash
+      lyt validate          # Check content files
+      lyt build --validate # Build with validation
+      ```
+
+      **In CI/CD:**
+
+      ```yaml
+      - name: Build and Validate
+        run: |
+          go build -o lyt .
+          ./lyt build --validate
+      ```
+
   - id: "next"
     type: "cta"
     title: "Need Help?"

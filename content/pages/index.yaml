@@ -6,6 +6,72 @@ meta:
   description: "lyt — minimal static sites"
   agent: true
 
+agent_content:
+  title: "lyt — Agent Documentation"
+  description: "lyt is a minimal static site generator written in Go."
+  
+  sections:
+    - type: "default"
+      title: "What is lyt?"
+      body: |
+        lyt transforms YAML content files into static HTML pages.
+        
+        Use lyt to:
+        - Generate documentation sites
+        - Build blogs with minimal dependencies
+        - Create simple, fast static sites
+
+    - type: "cli"
+      title: "Installation"
+      commands: |
+        go install github.com/b7r-dev/lyt@latest
+        lyt --version
+
+    - type: "cli"
+      title: "Quick Start"
+      commands: |
+        lyt init my-site
+        cd my-site
+        lyt build
+        lyt serve
+
+    - type: "schema"
+      title: "Content Structure"
+      schema: |
+        content/pages/*.yaml:
+          meta:
+            title: "Page Title"
+            slug: "/page-slug"
+            description: "Description"
+          
+          sections:
+            - type: "hero"
+              title: "Title"
+
+    - type: "link"
+      text: "→ Full Documentation"
+      href: "/agents/docs/getting-started"
+
+    - type: "cli"
+      title: "Validate Content"
+      commands: |
+        lyt validate          # Check content files
+        lyt build --validate  # Build with validation
+
+    - type: "example"
+      title: "Schema Validation"
+      language: "yaml"
+      example: |
+        # content/schema.yaml defines valid structure
+        page:
+          required_fields:
+            - meta
+          field_meta:
+            meta:
+              required:
+                - title
+                - slug
+
 sections:
   - id: "hero"
     type: "hero"

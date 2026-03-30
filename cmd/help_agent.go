@@ -67,6 +67,16 @@ func runHelpAgent(cmd *cobra.Command, args []string) error {
 				Flags:       []AgentFlag{},
 				Example:     "lyt help agent json",
 			},
+			{
+				Name:        "validate",
+				Description: "Validate content files against schema (content/schema.yaml)",
+				Usage:       "lyt validate [flags]",
+				Flags: []AgentFlag{
+					{Name: "-s, --strict", Description: "Treat warnings as errors"},
+					{Name: "-f, --fix", Description: "Attempt to fix common issues"},
+				},
+				Example: "lyt validate",
+			},
 		},
 		ProjectStructure: AgentProjectStructure{
 			Root: map[string]string{
@@ -83,7 +93,7 @@ func runHelpAgent(cmd *cobra.Command, args []string) error {
 			},
 		},
 		ContentSchema: AgentContentSchema{
-			Frontmatter: []string{"title", "slug", "description", "date", "tags", "draft"},
+			Frontmatter: []string{"title", "slug", "description", "date", "tags", "draft", "agent"},
 			SectionTypes: []string{
 				"hero: Hero section with title, subtitle, body, and buttons",
 				"features: Feature grid with cards",
@@ -95,12 +105,29 @@ func runHelpAgent(cmd *cobra.Command, args []string) error {
 				"callout: Informational callout",
 				"code-example: Syntax-highlighted code block",
 			},
+			AgentSectionTypes: []string{
+				"default: Text content with title and body",
+				"cli: CLI command reference",
+				"schema: Code/schema examples",
+				"example: Usage examples",
+				"link: Navigation links",
+			},
 		},
 		Workflows: []AgentWorkflow{
 			{
 				Name:        "Create new project",
 				Steps:       []string{"mkdir my-project && cd my-project", "lyt init", "lyt build", "lyt serve"},
 				Description: "Initialize a new project and start development",
+			},
+			{
+				Name:        "Validate content",
+				Steps:       []string{"lyt validate", "Review any errors", "Fix content/schema.yaml issues"},
+				Description: "Check content files for schema compliance before building",
+			},
+			{
+				Name:        "Build with validation",
+				Steps:       []string{"lyt build --validate", "Review dist/ output"},
+				Description: "Build site and validate content in one step",
 			},
 			{
 				Name:        "Add new page",
@@ -119,8 +146,8 @@ func runHelpAgent(cmd *cobra.Command, args []string) error {
 			},
 			{
 				Name:        "Deploy site",
-				Steps:       []string{"lyt build -o ./dist", "Deploy dist/ to hosting provider"},
-				Description: "Build and deploy to production",
+				Steps:       []string{"lyt build --validate -o ./dist", "Deploy dist/ to hosting provider"},
+				Description: "Build, validate, and deploy to production",
 			},
 		},
 		HostingProviders: []AgentHosting{
@@ -189,6 +216,12 @@ func runHelpAgent(cmd *cobra.Command, args []string) error {
 		}
 		fmt.Println()
 
+		fmt.Println("### Agent Section Types")
+		for _, st := range agentHelp.ContentSchema.AgentSectionTypes {
+			fmt.Printf("- %s\n", st)
+		}
+		fmt.Println()
+
 		fmt.Println("## Common Workflows")
 		fmt.Println()
 		for _, wf := range agentHelp.Workflows {
@@ -219,6 +252,8 @@ func runHelpAgent(cmd *cobra.Command, args []string) error {
 		fmt.Println("4. Section types are composable - mix and match in YAML")
 		fmt.Println("5. The build output is static HTML/CSS - no JavaScript required")
 		fmt.Println("6. Use `--verbose` flag for detailed output during troubleshooting")
+		fmt.Println("7. Use `lyt validate` or `lyt build --validate` to check schema compliance")
+		fmt.Println("8. Schema is defined in content/schema.yaml - validate before building")
 	}
 
 	return nil
@@ -265,8 +300,9 @@ type AgentProjectStructure struct {
 }
 
 type AgentContentSchema struct {
-	Frontmatter  []string `json:"frontmatter"`
-	SectionTypes []string `json:"section_types"`
+	Frontmatter       []string `json:"frontmatter"`
+	SectionTypes      []string `json:"section_types"`
+	AgentSectionTypes []string `json:"agent_section_types"`
 }
 
 type AgentWorkflow struct {

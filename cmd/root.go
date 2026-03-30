@@ -18,7 +18,16 @@ A minimal static site generator: YAML for structure, Markdown for content,
 Templ for components, pure HTML output.
 
 Run from any project directory containing content/ and templates/.
-Output defaults to ./dist in the current directory.`,
+Output defaults to ./dist in the current directory.
+
+Commands:
+  build       Build the static site
+  serve       Start development server with live reload
+  init        Initialize a new project
+  validate    Validate content against schema
+
+Use "lyt <command> --help" for more information about a command.
+Use "lyt help agent" for AI agent-specific guidance.`,
 	Version: "1.0.0",
 }
 
