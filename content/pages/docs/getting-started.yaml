@@ -243,6 +243,19 @@ sections:
       
       Opens http://localhost:8080 with live reload on file changes.
 
+  - id: "validate"
+    type: "default"
+    title: "Validate Your Content"
+    body: |
+      lyt includes content validation:
+
+      ```bash
+      lyt validate          # Check content validity
+      lyt build --validate  # Build with automatic validation
+      ```
+
+      The schema is in `content/schema.yaml`.
+
   - id: "ai-prompt"
     type: "default"
     title: "Start with an AI Agent"

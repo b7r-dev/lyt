@@ -1,12 +1,22 @@
 package content
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"gopkg.in/yaml.v3"
 )
+
+// keys returns the keys of a map as a slice of strings
+func keys(m map[string]interface{}) []string {
+	out := make([]string, 0, len(m))
+	for k := range m {
+		out = append(out, k)
+	}
+	return out
+}
 
 // ContentFile represents a parsed YAML content file
 type ContentFile struct {
@@ -59,8 +69,13 @@ func (s *Scanner) Scan() (*Collection, error) {
 		}
 		rel = filepath.ToSlash(rel)
 
-		// Skip data files
-		if strings.HasPrefix(rel, "data/") || strings.HasPrefix(rel, "_") {
+		// Debug: log every file found
+		if s.verbose {
+			fmt.Printf("   [scanner] found: %s\n", rel)
+		}
+
+		// Skip data files and schema
+		if strings.HasPrefix(rel, "data/") || strings.HasPrefix(rel, "_") || rel == "schema.yaml" {
 			return nil
 		}
 
@@ -71,11 +86,21 @@ func (s *Scanner) Scan() (*Collection, error) {
 
 		var raw map[string]interface{}
 		if err := yaml.Unmarshal(data, &raw); err != nil {
+			if s.verbose {
+				fmt.Printf("   [scanner] YAML parse error: %s: %v\n", rel, err)
+			}
 			return nil
 		}
 
 		if raw == nil || len(raw) == 0 {
+			if s.verbose {
+				fmt.Printf("   [scanner] empty/nil YAML: %s\n", rel)
+			}
 			return nil
+		}
+
+		if s.verbose {
+			fmt.Printf("   [scanner] parsed YAML: %s, keys: %v\n", rel, keys(raw))
 		}
 
 		cf := ContentFile{
@@ -101,6 +126,9 @@ func (s *Scanner) Scan() (*Collection, error) {
 			c.Tokens = raw
 		default:
 			cf.Type = "page"
+			if s.verbose {
+				fmt.Printf("   [scanner] added to Pages: %s\n", rel)
+			}
 			c.Pages = append(c.Pages, cf)
 		}
 
