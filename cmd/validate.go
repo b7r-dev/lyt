@@ -24,6 +24,9 @@ type ValidationError struct {
 var (
 	validateStrict bool
 	validateFix    bool
+	validateSchema bool
+	validateLinks  bool
+	validateDir    string
 )
 
 // Valid section types
@@ -73,15 +76,16 @@ var validWarningVariants = map[string]bool{
 
 var validateCmd = &cobra.Command{
 	Use:   "validate",
-	Short: "Validate content against schema",
-	Long: `Validate all content files against the lyt schema.
+	Short: "Validate content (schema and/or links)",
+	Long: `Validate lyt content.
 	
-Checks:
-- Required fields present
-- Field types correct
-- Section types valid
-- URL slugs properly formatted
-- Agent content properly configured
+Without flags, validates both schema and links.
+	
+Examples:
+  lyt validate              # Validate schema and links
+  lyt validate --schema    # Just schema validation
+  lyt validate --links     # Just link validation
+  lyt validate --schema --links  # Explicitly both
 
 Exit code 0 = all valid
 Exit code 1 = validation errors found`,
@@ -91,10 +95,46 @@ Exit code 1 = validation errors found`,
 func init() {
 	validateCmd.Flags().BoolVarP(&validateStrict, "strict", "s", false, "Treat warnings as errors")
 	validateCmd.Flags().BoolVarP(&validateFix, "fix", "f", false, "Attempt to fix common issues")
+	validateCmd.Flags().BoolVar(&validateSchema, "schema", false, "Validate content schema")
+	validateCmd.Flags().BoolVar(&validateLinks, "links", false, "Validate internal links")
+	validateCmd.Flags().StringVar(&validateDir, "dir", "", "Directory with dist files to check links (default: ./dist)")
 	rootCmd.AddCommand(validateCmd)
 }
 
 func runValidate(cmd *cobra.Command, args []string) error {
+	// Default: run both schema and links validation
+	runSchema := validateSchema
+	runLinks := validateLinks
+	if !runSchema && !runLinks {
+		runSchema = true
+		runLinks = true
+	}
+
+	var hasErrors bool
+
+	// Schema validation
+	if runSchema {
+		if err := runSchemaValidation(); err != nil {
+			hasErrors = true
+		}
+	}
+
+	// Link validation
+	if runLinks {
+		if err := runLinkValidation(); err != nil {
+			hasErrors = true
+		}
+	}
+
+	if hasErrors {
+		return fmt.Errorf("validation failed")
+	}
+
+	return nil
+}
+
+// runSchemaValidation validates content against schema
+func runSchemaValidation() error {
 	projectRoot, err := detectProjectRoot()
 	if err != nil {
 		return fmt.Errorf("not a valid lyt project: %w", err)
@@ -143,12 +183,12 @@ func runValidate(cmd *cobra.Command, args []string) error {
 
 	// Print results
 	if len(errors) == 0 {
-		fmt.Printf("✅ All content valid (%d pages, %d blog posts)\n",
+		fmt.Printf("✅ Schema valid (%d pages, %d blog posts)\n",
 			len(collection.Pages), len(collection.Blog))
 		return nil
 	}
 
-	fmt.Printf("❌ Found %d validation error(s):\n\n", len(errors))
+	fmt.Printf("❌ Found %d schema error(s):\n\n", len(errors))
 	for _, e := range errors {
 		loc := e.File
 		if e.Line > 0 {
@@ -163,10 +203,10 @@ func runValidate(cmd *cobra.Command, args []string) error {
 
 	if validateStrict {
 		fmt.Println("💥 Strict mode: treating warnings as errors")
-		return fmt.Errorf("validation failed")
+		return fmt.Errorf("schema validation failed")
 	}
 
-	return fmt.Errorf("validation failed with %d error(s)", len(errors))
+	return fmt.Errorf("schema validation failed with %d error(s)", len(errors))
 }
 
 func validatePage(cf content.ContentFile) []ValidationError {
@@ -601,4 +641,228 @@ func loadSchema(path string) (map[string]interface{}, error) {
 	}
 
 	return schema, nil
+}
+
+// LinkValidationError represents a broken link
+type LinkValidationError struct {
+	SourceFile string
+	Line       int
+	Link       string
+	Message    string
+}
+
+// runLinkValidation validates internal links in built HTML files
+func runLinkValidation() error {
+	// Determine dist directory
+	distDir := validateDir
+	if distDir == "" {
+		cwd, err := os.Getwd()
+		if err != nil {
+			return fmt.Errorf("get working directory: %w", err)
+		}
+		distDir = filepath.Join(cwd, "dist")
+	}
+
+	// Check if dist exists
+	if _, err := os.Stat(distDir); os.IsNotExist(err) {
+		fmt.Printf("⚠️  No dist directory found at %s - skipping link validation\n", distDir)
+		fmt.Println("   Run 'lyt build' first, or use --dir to specify a different directory")
+		return nil
+	}
+
+	// Read sitemap.xml to get URLs
+	sitemapPath := filepath.Join(distDir, "sitemap.xml")
+	sitemapData, err := os.ReadFile(sitemapPath)
+	if err != nil {
+		fmt.Printf("⚠️  No sitemap.xml found - skipping link validation\n")
+		return nil
+	}
+
+	// Parse URLs from sitemap (simple parsing)
+	var urls []string
+	lines := strings.Split(string(sitemapData), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "<loc>") {
+			start := strings.Index(line, "<loc>") + 5
+			end := strings.Index(line, "</loc>")
+			if start > 4 && end > start {
+				url := line[start:end]
+				// Strip base URL to get path
+				url = strings.TrimPrefix(url, "https://lyt.local")
+				url = strings.TrimPrefix(url, "http://lyt.local")
+				urls = append(urls, url)
+			}
+		}
+	}
+
+	if len(urls) == 0 {
+		fmt.Println("⚠️  No URLs found in sitemap - skipping link validation")
+		return nil
+	}
+
+	fmt.Printf("🔗 Checking %d pages for broken links...\n", len(urls))
+
+	var errors []LinkValidationError
+
+	// Check each HTML file for broken links
+	for _, url := range urls {
+		// Convert URL to file path
+		filePath := filepath.Join(distDir, url)
+		if url == "/" || url == "" {
+			filePath = filepath.Join(distDir, "index.html")
+		} else {
+			filePath = filepath.Join(filePath, "index.html")
+		}
+
+		// Read the HTML file
+		htmlData, err := os.ReadFile(filePath)
+		if err != nil {
+			continue // Skip if can't read
+		}
+
+		html := string(htmlData)
+
+		// Find all links in the HTML
+		// Match href="..." or href='...'
+		linkRegex := regexp.MustCompile(`href=["']([^"']+)["']`)
+		matches := linkRegex.FindAllStringSubmatchIndex(html, -1)
+
+		for _, match := range matches {
+			if len(match) < 4 {
+				continue
+			}
+			link := html[match[2]:match[3]]
+
+			// Skip external links, anchors, and mailto
+			if strings.HasPrefix(link, "http") ||
+				strings.HasPrefix(link, "//") ||
+				strings.HasPrefix(link, "#") ||
+				strings.HasPrefix(link, "mailto:") ||
+				strings.HasPrefix(link, "tel:") {
+				continue
+			}
+
+			// Handle ./ prefix (same directory)
+			link = strings.TrimPrefix(link, "./")
+
+			// Handle fragment identifiers (e.g., /docs/content#section)
+			fragment := ""
+			if idx := strings.Index(link, "#"); idx != -1 {
+				fragment = link[idx:]
+				link = link[:idx]
+			}
+
+			// Skip empty links after removing fragment
+			if link == "" {
+				continue
+			}
+
+			// Resolve relative link
+			resolved := resolveURL(url, link)
+
+			// Check if the resolved path exists
+			targetPath := filepath.Join(distDir, resolved)
+			if !strings.HasSuffix(resolved, ".html") && !strings.HasSuffix(resolved, "/") {
+				targetPath = filepath.Join(targetPath, "index.html")
+			}
+
+			if _, err := os.Stat(targetPath); os.IsNotExist(err) {
+				// Try with .html
+				if !strings.HasSuffix(resolved, ".html") {
+					targetPath = resolved + ".html"
+				}
+				if _, err := os.Stat(targetPath); os.IsNotExist(err) {
+					errors = append(errors, LinkValidationError{
+						SourceFile: filePath,
+						Link:       link + fragment,
+						Message:    fmt.Sprintf("broken link: %s -> %s (resolved: %s)", url, link, resolved),
+					})
+				}
+			}
+		}
+	}
+
+	// Print results
+	if len(errors) == 0 {
+		fmt.Printf("✅ All links valid (%d pages checked)\n", len(urls))
+		return nil
+	}
+
+	fmt.Printf("❌ Found %d broken link(s):\n\n", len(errors))
+	for _, e := range errors {
+		relPath, _ := filepath.Rel(distDir, e.SourceFile)
+		fmt.Printf("  ✗ %s\n", relPath)
+		fmt.Printf("      Broken link: %s\n\n", e.Link)
+	}
+
+	return fmt.Errorf("link validation failed with %d broken link(s)", len(errors))
+}
+
+// resolveURL resolves a relative URL against a base URL
+func resolveURL(base, relative string) string {
+	// Handle absolute links
+	if strings.HasPrefix(relative, "/") {
+		return relative
+	}
+
+	// Normalize base - remove trailing slash
+	base = strings.TrimSuffix(base, "/")
+
+	// Handle empty or root base
+	if base == "" || base == "/" {
+		if relative != "" {
+			return "/" + relative
+		}
+		return "/"
+	}
+
+	// Handle parent directory references
+	if strings.HasPrefix(relative, "../") {
+		// Count how many levels up we need to go
+		parts := strings.Split(base, "/")
+		relParts := strings.Split(relative, "/")
+
+		upCount := 0
+		for _, part := range relParts {
+			if part == ".." {
+				upCount++
+			}
+		}
+
+		// Go up the required number of levels
+		newParts := parts[:len(parts)-upCount]
+		if len(newParts) == 0 {
+			newParts = []string{""}
+		}
+
+		// Append any remaining path parts
+		for _, part := range relParts {
+			if part != ".." && part != "" {
+				newParts = append(newParts, part)
+			}
+		}
+
+		result := strings.Join(newParts, "/")
+		if !strings.HasPrefix(result, "/") {
+			result = "/" + result
+		}
+		return result
+	}
+
+	// Simple relative path - just join with base directory
+	// Get the directory part of the base path
+	// For "/docs", we want to keep "/docs" as the base
+	if base == "/" || base == "" {
+		return "/" + relative
+	}
+
+	// Base is like "/docs" or "/docs/components"
+	// Find the last slash
+	idx := strings.LastIndex(base, "/")
+	if idx >= 0 {
+		// There may be a slash in the path
+		return base + "/" + relative
+	}
+
+	return "/" + relative
 }
