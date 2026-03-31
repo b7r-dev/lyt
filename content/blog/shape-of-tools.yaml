@@ -46,7 +46,7 @@ sections:
     title: Build command
     language: bash
     code: |
-      cd engine
+      cd lyt
       go build -o lyt
       ./lyt build
 

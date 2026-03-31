@@ -84,7 +84,7 @@ sections:
             
             - name: Build
               run: |
-                cd engine
+                cd lyt
                 go run . build
             
             - name: Deploy
@@ -127,7 +127,7 @@ sections:
             
             - name: Build
               run: |
-                cd engine
+                cd lyt
                 go run . build
             
             - name: Deploy
@@ -167,7 +167,7 @@ sections:
             
             - name: Build
               run: |
-                cd engine
+                cd lyt
                 go run . build
             
             - name: Deploy
@@ -230,7 +230,7 @@ sections:
       Build locally or in CI, then rsync:
       
       ```bash
-      cd engine && go run . build
+      cd lyt && go run . build
       rsync -avz --delete dist/ user@vps:/var/www/yoursite/
       ```
       
@@ -267,7 +267,7 @@ sections:
       ```bash
       # In your CI
       export SITE_URL="https://staging.example.com"
-      cd engine && go run . build
+      cd lyt && go run . build
       ```
       
       Reference in templates via build-time substitution if needed.

@@ -146,7 +146,7 @@ sections:
       
       ```bash
       git clone https://github.com/b7r-dev/lyt
-      cd lyt/engine
+      cd lyt
       sudo make install
       ```
       
@@ -179,8 +179,8 @@ sections:
       If you're working on lyt itself or want the latest changes:
       
       ```bash
-      cd lyt/engine
-      go run . build -o ../dist
+      cd lyt
+      go run . build -o ./dist
       ```
       
       This runs lyt directly from source without installing it.
