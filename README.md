@@ -1,99 +1,176 @@
 # lyt
 
-**[Live Site](https://lyt.b7r.dev)** · **[GitHub](https://github.com/b7r-dev/lyt)** · **[Introduction for Agents](https://lyt.b7r.dev/agents)**
+**[Live Demo](https://lyt.b7r.dev)** · **[GitHub](https://github.com/b7r-dev/lyt)** · **[Agent Docs](https://lyt.b7r.dev/agents)**
 
-lyt is a minimal static site generator. No runtime JavaScript. No build step for templates. Just YAML, Markdown, and Go.
+lyt is a minimal static site generator written in Go. It transforms YAML content and Markdown into pure HTML—zero runtime JavaScript, no client-side framework, no template compilation step.
 
-## Structure
+## Why lyt?
 
-```
-lyt/
-├── cmd/           ← CLI commands (Go)
-├── internal/      ← Core libraries (Go)
-├── content/       ← Site content (YAML, Markdown)
-├── templates/     ← Styling (CSS)
-├── public/        ← Static assets (fonts, images)
-└── dist/          ← Built output (generated)
-```
+Modern static site generators often ship megabytes of JavaScript to the browser. lyt takes a different approach:
 
-Code, content, markup, and styling are kept strictly separate. They only meet at build time.
+- **Zero JS output** — The built site is pure HTML and CSS. It works on any device, including text-only browsers.
+- **Content/Style/Engine separation** — Your content lives in YAML, styling in CSS, and the engine is just... Go code. They only meet at build time.
+- **Design tokens** — Define colors, typography, and spacing once in YAML. lyt transforms them into CSS custom properties.
+- **Built-in components** — Hero sections, feature grids, callouts, CTAs, warnings, pull quotes—declared in YAML, rendered as semantic HTML.
+- **Schema validation** — Catch missing fields, invalid types, and broken links before you deploy.
+- **AI-ready** — Includes structured help for AI agents (`lyt help agent`) so assistants can work with your content intelligently.
 
-## Quick start
+## Quick Start
 
 ```bash
 # Install
 go install github.com/b7r-dev/lyt@latest
 
 # Or build from source
-git clone https://github.com/b7r-dev/lyt.git
+git clone https://github.com/b7r-dev/lyt
 cd lyt
 go build -o lyt .
 
-# Build the site
+# Create a project
+lyt init my-site
+cd my-site
+
+# Build
 ./lyt build
 
-# Serve locally (with hot reload)
+# Develop with hot reload
 ./lyt serve
 ```
 
-## Content
+## How It Works
 
-Pages are YAML files in `content/pages/`:
+### Content: YAML + Markdown
+
+Pages live in `content/pages/`:
 
 ```yaml
 meta:
-  title: "Page Title"
-  slug: "/page-slug"
-  description: "SEO description"
+  title: "Hello World"
+  slug: "/hello"
+  description: "A simple page"
 
 sections:
   - id: "intro"
+    type: "hero"
+    title: "Hello World"
+    subtitle: "Welcome to my site"
+
+  - id: "about"
     type: "default"
-    title: "Section Title"
+    title: "About"
     body: |
-      Section content in Markdown.
+      This is **Markdown** content.
 ```
 
-Long-form content lives in separate Markdown files, referenced via `@filename.md`:
+Blog posts go in `content/blog/` with an added `date` field. Long-form content can reference external Markdown files with `@filename.md`.
 
-```yaml
-sections:
-  - id: "article"
-    content: "@blog/my-article.md"
-```
+### Design Tokens
 
-Blog posts live in `content/blog/`. Same format as pages, plus a `body` field (inline Markdown) or `body.md` file reference.
-
-## Design tokens
-
-Tokens live in `content/tokens.yaml`. They're processed into CSS custom properties:
+Define your visual theme in `content/tokens.yaml`:
 
 ```yaml
 colors:
   base:
-    bg: "#f5f5f0"
-    text: "#3d3d3d"
+    bg: "#faf9f6"
+    text: "#2d2d2d"
+  accent:
+    primary: "#e07a5f"
+    
+typography:
+  fonts:
+    body: "system-ui, sans-serif"
 ```
 
-Output:
+These become CSS custom properties in your build output—no runtime processing needed.
 
-```css
-:root {
-  --color-base-bg: #f5f5f0;
-  --color-base-text: #3d3d3d;
-}
+### Section Components
+
+lyt renders these section types from your YAML:
+
+| Type | Output |
+|------|--------|
+| `hero` | Full-width header with title, subtitle, body, buttons |
+| `features` | Card grid with icons and descriptions |
+| `default` | Standard prose section |
+| `cta` | Call-to-action banner |
+| `callout` | Styled info/tip/warning boxes |
+| `pull-quote` | Blockquote with attribution |
+| `citation` | Book/article reference |
+| `warning` | Alert box (error, warning, info, success) |
+| `code-example` | Syntax-highlighted code block |
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `lyt build` | Build the site to `./dist` |
+| `lyt serve` | Dev server with hot reload |
+| `lyt init` | Initialize a new project |
+| `lyt validate` | Check content schema and links |
+| `lyt help agent` | AI agent documentation |
+
+Flags:
+- `-o, --output` — Output directory (default: `./dist`)
+- `-f, --force` — Force rebuild
+- `-v, --verbose` — Detailed output
+
+## Project Structure
+
+```
+my-site/
+├── content/
+│   ├── pages/         # Page YAML files
+│   ├── blog/          # Blog post YAML files
+│   ├── config/        # Site configuration
+│   ├── tokens.yaml   # Design tokens
+│   └── schema.yaml   # Content schema
+├── templates/        # HTML templates + CSS
+├── public/           # Static assets
+└── dist/             # Built output
 ```
 
-## Design system
+## Deployment
 
-The design system is built on three principles:
+Build output is static files in `./dist`. Deploy to anything:
 
-1. **3-plane z-axis** — `z: 0` (prose), `z: 10` (cards), `z: 100` (nav)
-2. **Beige palette** — warm, desaturated, content-forward
-3. **Mobile-first** — works without JavaScript on any device
+- **Vercel** — Connect repo, runs `lyt build`
+- **Netlify** — Connect repo, runs `lyt build`  
+- **Cloudflare Pages** — Connect repo, runs `lyt build`
+- **GitHub Pages** — Use GitHub Actions
+- **VPS/rsync** — `lyt build -o ./dist && rsync -av dist/ user@server:`
 
-Depth is conveyed through stacked shadow offsets and `backdrop-filter: blur()` — no images, no extra markup.
+## Validation
 
-## Publishing
+lyt validates your content before building:
 
-Publish is `git push`. Run `lyt build` in CI/CD and deploy `dist/` to any static host.
+```bash
+# Validate schema and links
+lyt validate
+
+# Schema only
+lyt validate --schema
+
+# Links only  
+lyt validate --links
+
+# Custom dist directory
+lyt validate --links --dir /path/to/dist
+```
+
+Checks include:
+- Required fields (title, slug)
+- Section type validity
+- CTA field pairs (button_text + button_href)
+- Internal link integrity
+- Agent section structures
+
+## Philosophy
+
+1. **Separation of concerns** — Content, style, and engine are independent. Swap any without touching the others.
+2. **No runtime dependencies** — The built site needs no JavaScript, no CDN, no special hosting.
+3. **Fast builds** — Incremental builds with change detection. Typical rebuilds complete in milliseconds.
+4. **Agent-friendly** — AI assistants can read, modify, and validate your content because it's just structured YAML.
+
+## License
+
+MIT
