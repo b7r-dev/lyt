@@ -9,7 +9,6 @@ import (
 
 	"github.com/b7r-dev/lyt/internal/content"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
 )
 
 // ValidationError holds validation failure information
@@ -626,21 +625,6 @@ func validateConfigField(key string, value interface{}) []ValidationError {
 	}
 
 	return errors
-}
-
-// loadSchema loads the schema file
-func loadSchema(path string) (map[string]interface{}, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	var schema map[string]interface{}
-	if err := yaml.Unmarshal(data, &schema); err != nil {
-		return nil, err
-	}
-
-	return schema, nil
 }
 
 // LinkValidationError represents a broken link
