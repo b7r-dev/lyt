@@ -28,7 +28,7 @@ Commands:
 
 Use "lyt <command> --help" for more information about a command.
 Use "lyt help agent" for AI agent-specific guidance.`,
-	Version: "1.1.0",
+	Version: "1.1.1",
 }
 
 func Execute() error {

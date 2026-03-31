@@ -5,6 +5,16 @@ All notable changes to lyt will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-03-31
+
+### Fixed
+- **Init templates** — Refreshed all embedded templates to match current codebase:
+  - Design tokens now use nested structure (base, accent, system colors)
+  - CSS updated with full component styles (1182 lines)
+  - Site config includes agent_section and correct nav
+  - Index and about pages include agent_content for AI assistance
+  - Added blog.yaml and docs.yaml templates
+
 ## [1.1.0] - 2026-03-30
 
 ### Added
@@ -67,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Notes |
 |---------|------|-------|
+| 1.1.1 | 2026-03-31 | Fix init templates |
 | 1.1.0 | 2026-03-30 | Schema + link validation |
 | 1.0.0 | 2026-03-29 | Initial public release |
 | 0.2.0 | 2026-03-29 | Composable content + rendering quality |
