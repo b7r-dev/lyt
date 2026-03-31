@@ -17,7 +17,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: engine/go.mod
+          go-version-file: go.mod
           cache: true
 
       - name: Run golangci-lint
@@ -37,18 +37,17 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: engine/go.mod
+          go-version-file: go.mod
           cache: true
 
       - name: Run tests
-        working-directory: engine
         run: go test -v -race -coverprofile=coverage.out ./...
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: engine/coverage.out
+          path: coverage.out
           retention-days: 7
 
   build:
@@ -61,13 +60,11 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: engine/go.mod
+          go-version-file: go.mod
           cache: true
 
       - name: Build
-        working-directory: engine
         run: go build -o lyt
 
       - name: Verify build
-        working-directory: engine
         run: ./lyt build
